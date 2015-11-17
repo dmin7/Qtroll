@@ -34,9 +34,6 @@
 	requested that these non-binding requests be included whenever the
 	above license is reproduced.
 */
-
-#ifdef Q_OS_WIN
-
 #include "../NetworkingUtils.h"
 
 #include <winsock2.h>   // this must come first to prevent errors with MSVC7
@@ -45,6 +42,7 @@
 #include <cstring>
 
 
+namespace osc{
 static LONG initCount_ = 0;
 static bool winsockInitialized_ = false;
 
@@ -96,5 +94,4 @@ unsigned long GetHostByName( const char *name )
 
     return result;
 }
-
-#endif
+}

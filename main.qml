@@ -1,14 +1,14 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 
-import UDPClient 1.0
-import UDPServer 1.0
+import OscClient 1.0
+import OscServer 1.0
 
 ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    title: qsTr("Hello World")
+    title: qsTr("qtroll")
 
     menuBar: MenuBar {
         Menu {
@@ -24,11 +24,11 @@ ApplicationWindow {
         }
     }
 
-    UDPClient {
+    OscClient {
         id: udp_client
     }
 
-    UDPServer {
+    OscServer {
         id: udp_server
     }
 

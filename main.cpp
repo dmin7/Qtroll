@@ -2,25 +2,19 @@
 #include <QQmlApplicationEngine>
 #include <QtQml>
 
-#include "udpclient.h"
-#include "udpserver.h"
+#include "OscClient.h"
+#include "OscServer.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    UDPClient udp_client;
-    qmlRegisterType<UDPClient>("UDPClient", 1, 0, "UDPClient");
+    OscClient udp_client;
+    qmlRegisterType<OscClient>("OscClient", 1, 0, "OscClient");
 
-    UDPServer udp_server;
-    qmlRegisterType<UDPServer>("UDPServer", 1, 0, "UDPServer");
+    OscServer udp_server;
+    qmlRegisterType<OscServer>("OscServer", 1, 0, "OscServer");
 
-    /*
-    UdpListeningReceiveSocket socket(
-                    IpEndpointName( "127.0.0.2", CLIENT_PORT ),
-                    &udp_server );
-    socket.Run();
-    */
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

@@ -5,14 +5,23 @@ CONFIG += c++11
 
 SOURCES += main.cpp \
     oscpack/ip/IpEndpointName.cpp \
-    oscpack/ip/NetworkingUtils.cpp \
-    oscpack/ip/UdpSocket.cpp \
     oscpack/osc/OscOutboundPacketStream.cpp \
     oscpack/osc/OscPrintReceivedElements.cpp \
     oscpack/osc/OscReceivedElements.cpp \
     oscpack/osc/OscTypes.cpp \
-    udpclient.cpp \
-    udpserver.cpp
+    OscClient.cpp \
+    OscServer.cpp
+
+win32 {
+    SOURCES += oscpack/ip/win32/NetworkingUtils.cpp \
+    oscpack/ip/win32/UdpSocket.cpp
+}
+
+!win32 {
+    SOURCES += oscpack/ip/posix/NetworkingUtils.cpp \
+    oscpack/ip/posix/UdpSocket.cpp
+}
+
 
 RESOURCES += qml.qrc
 
@@ -36,7 +45,6 @@ HEADERS += \
     oscpack/osc/OscPrintReceivedElements.h \
     oscpack/osc/OscReceivedElements.h \
     oscpack/osc/OscTypes.h \
-    udpclient.h \
-    udpserver.h \
-    osclistener.h
+    OscClient.h \
+    OscServer.h
 

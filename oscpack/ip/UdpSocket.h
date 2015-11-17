@@ -43,6 +43,7 @@
 #include "IpEndpointName.h"
 
 
+namespace osc{
 class PacketListener;
 class TimerListener;
 
@@ -81,6 +82,7 @@ class UdpSocket{
     Implementation *impl_;
     
 	friend class SocketReceiveMultiplexer::Implementation;
+	static unsigned long maxBufferSize;
     
 public:
 
@@ -115,17 +117,20 @@ public:
 
 	// Connect to a remote endpoint which is used as the target
 	// for calls to Send()
-	void Connect( const IpEndpointName& remoteEndpoint );	
+	void Connect( const IpEndpointName& remoteEndpoint, bool enableBroadcast = false );
 	void Send( const char *data, std::size_t size );
     void SendTo( const IpEndpointName& remoteEndpoint, const char *data, std::size_t size );
 
 
 	// Bind a local endpoint to receive incoming data. Endpoint
 	// can be 'any' for the system to choose an endpoint
-	void Bind( const IpEndpointName& localEndpoint );
+	void Bind( const IpEndpointName& localEndpoint, bool allowReuse = false );
 	bool IsBound() const;
 
     std::size_t ReceiveFrom( IpEndpointName& remoteEndpoint, char *data, std::size_t size );
+    
+    static void SetUdpBufferSize( unsigned long bufferSize );
+    static unsigned long GetUdpBufferSize();
 };
 
 
@@ -136,15 +141,15 @@ public:
 
 class UdpTransmitSocket : public UdpSocket{
 public:
-	UdpTransmitSocket( const IpEndpointName& remoteEndpoint )
-		{ Connect( remoteEndpoint ); }
+	UdpTransmitSocket( const IpEndpointName& remoteEndpoint, bool enableBroadcast = false )
+		{ Connect( remoteEndpoint, enableBroadcast ); }
 };
 
 
 class UdpReceiveSocket : public UdpSocket{
 public:
-	UdpReceiveSocket( const IpEndpointName& localEndpoint )
-		{ Bind( localEndpoint ); }
+	UdpReceiveSocket( const IpEndpointName& localEndpoint, bool allowReuse = false )
+		{ Bind( localEndpoint, allowReuse ); }
 };
 
 
@@ -155,10 +160,10 @@ class UdpListeningReceiveSocket : public UdpSocket{
     SocketReceiveMultiplexer mux_;
     PacketListener *listener_;
 public:
-	UdpListeningReceiveSocket( const IpEndpointName& localEndpoint, PacketListener *listener )
+	UdpListeningReceiveSocket( const IpEndpointName& localEndpoint, PacketListener *listener, bool allowReuse = false )
         : listener_( listener )
     {
-        Bind( localEndpoint );
+        Bind( localEndpoint, allowReuse );
         mux_.AttachSocketListener( this, listener_ );
     }
 
@@ -171,6 +176,6 @@ public:
     void Break() { mux_.Break(); }
     void AsynchronousBreak() { mux_.AsynchronousBreak(); }
 };
-
+}
 
 #endif /* INCLUDED_OSCPACK_UDPSOCKET_H */
