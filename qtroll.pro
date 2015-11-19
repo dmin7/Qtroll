@@ -3,7 +3,9 @@ TEMPLATE = app
 QT += qml quick widgets
 CONFIG += c++11
 
+win32{
 LIBS += -lws2_32 -lwinmm
+}
 
 SOURCES += main.cpp \
     oscpack/ip/IpEndpointName.cpp \
