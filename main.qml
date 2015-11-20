@@ -34,9 +34,9 @@ ApplicationWindow {
 
 
     Rectangle {
-        id: mainwondow
-        anchors.fill: parent
-
+        id: piano
+        width: parent.width
+        height: 100
         ListModel{
             id: noten
             ListElement{note: "c0"}
@@ -67,28 +67,14 @@ ApplicationWindow {
             ListElement{note: "g3"}
             ListElement{note: "a3"}
             ListElement{note: "h3"}
-            ListElement{note: "c4"}
-            ListElement{note: "d4"}
-            ListElement{note: "e4"}
-            ListElement{note: "f4"}
-            ListElement{note: "g4"}
-            ListElement{note: "a4"}
-            ListElement{note: "h4"}
-            ListElement{note: "c5"}
-            ListElement{note: "d5"}
-            ListElement{note: "e5"}
-            ListElement{note: "f5"}
-            ListElement{note: "g5"}
-            ListElement{note: "a5"}
-            ListElement{note: "h5"}
         }
 
         Component{
             id: key_white
             Rectangle {
-                width: 20
-                height: 80
-                color: "#FFFFF0"
+                width: parent.width / noten.count
+                height: parent.height
+                color: Qt.rgba(Math.random(), Math.random(), Math.random(), 1); // "#FFFFF0" // ivory
                 border { width: 1; color: "black" }
                 radius: 3
                 Text {
@@ -111,7 +97,7 @@ ApplicationWindow {
 
     }
 
-    /*
+/*
     Column {
         anchors.centerIn: parent
         spacing: parent.width/6
@@ -140,6 +126,6 @@ ApplicationWindow {
             onClicked: Qt.quit()
         }   
     }
-    */
+*/
 }
 

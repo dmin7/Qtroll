@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QtQml>
 
+#include "piano.h"
 #include "OscClient.h"
 #include "OscServer.h"
 
@@ -18,6 +19,9 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+    Piano p;
+    p.show();
 
     return app.exec();
 }

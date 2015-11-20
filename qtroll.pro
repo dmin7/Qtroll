@@ -1,11 +1,7 @@
 TEMPLATE = app
 
-QT += qml quick widgets
+QT += core gui widgets quick
 CONFIG += c++11
-
-win32{
-LIBS += -lws2_32 -lwinmm
-}
 
 SOURCES += main.cpp \
     oscpack/ip/IpEndpointName.cpp \
@@ -14,11 +10,14 @@ SOURCES += main.cpp \
     oscpack/osc/OscReceivedElements.cpp \
     oscpack/osc/OscTypes.cpp \
     OscClient.cpp \
-    OscServer.cpp
+    OscServer.cpp \
+    pianokey.cpp \
+    piano.cpp
 
 win32 {
     SOURCES += oscpack/ip/win32/NetworkingUtils.cpp \
     oscpack/ip/win32/UdpSocket.cpp
+    LIBS += -lws2_32 -lwinmm
 }
 
 !win32 {
@@ -50,5 +49,7 @@ HEADERS += \
     oscpack/osc/OscReceivedElements.h \
     oscpack/osc/OscTypes.h \
     OscClient.h \
-    OscServer.h
+    OscServer.h \
+    pianokey.h \
+    piano.h
 
