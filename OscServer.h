@@ -35,7 +35,8 @@ public slots:
 
 private:
     void setup(osc::UdpListeningReceiveSocket * socket);
-    osc::UdpListeningReceiveSocket *recieveSocket;
+    //osc::UdpListeningReceiveSocket *recieveSocket;
+    QList<QObject*> *noteData;
     // shutdown the listener
     void shutdown();
     // socket to listen on

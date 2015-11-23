@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     OscClient.cpp \
     OscServer.cpp \
     pianokey.cpp \
-    piano.cpp
+    piano.cpp \
+    note.cpp
 
 win32 {
     SOURCES += oscpack/ip/win32/NetworkingUtils.cpp \
@@ -51,5 +52,9 @@ HEADERS += \
     OscClient.h \
     OscServer.h \
     pianokey.h \
-    piano.h
+    piano.h \
+    note.h
+
+DISTFILES += \
+    global.js
 

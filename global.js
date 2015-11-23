@@ -1,0 +1,3 @@
+var noteWidth = 30;
+
+

@@ -15,7 +15,7 @@ class OscClient : public QObject
 {
     Q_OBJECT
 public:
-    explicit OscClient(QObject *parent = 0);
+    explicit OscClient(QObject *parent = 0, std::string server = SERVER_IP, int port = SERVER_PORT);
     Q_INVOKABLE void connect();
     Q_INVOKABLE void sendMsg(const QString msg);
 
@@ -24,7 +24,8 @@ signals:
 public slots:
 
 private:
-
+    std::string server;
+    int port;
     bool isConnected;
     osc::UdpTransmitSocket *transmitSocket;
     char buffer[OUTPUT_BUFFER_SIZE];

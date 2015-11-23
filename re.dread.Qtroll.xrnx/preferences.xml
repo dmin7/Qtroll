@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ScriptingToolPreferences doc_version="0">
+  <server_port_notes>8000</server_port_notes>
+  <hostname>192.168.3.20</hostname>
+  <client_port_notes>7001</client_port_notes>
+  <autostart>true</autostart>
+  <client_port_ctrl>7001</client_port_ctrl>
+</ScriptingToolPreferences>

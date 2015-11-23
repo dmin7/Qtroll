@@ -1,15 +1,17 @@
 #include "OscClient.h"
 
-OscClient::OscClient(QObject *parent) : QObject(parent)
+OscClient::OscClient(QObject *parent, std::string server, int port ) : QObject(parent)
 {
     this->isConnected = false;
+    this->server = server;
+    this->port = port;
 }
 
 void OscClient::connect()
 {
 
 
-    static osc::UdpTransmitSocket transmitSocket( osc::IpEndpointName( SERVER_IP, SERVER_PORT ) );
+    static osc::UdpTransmitSocket transmitSocket( osc::IpEndpointName( this->server.c_str(), this->port ) );
     this->transmitSocket = &transmitSocket;
 
     static osc::OutboundPacketStream stream( this->buffer, OUTPUT_BUFFER_SIZE );
