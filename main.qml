@@ -67,6 +67,8 @@ ApplicationWindow {
         id: osc_server_notes
     }
 
+
+
         Flickable {
         id: flickeverything
         width: parent.width
@@ -78,170 +80,158 @@ ApplicationWindow {
         Flickable {
             id: flickgrid
             x: 0
-            y: 100
+            y: 70
             width: parent.width
-            height: parent.height - 100
+            height: parent.height - 70
             contentWidth: flickgrid.width
             contentHeight: 10000
             boundsBehavior: Flickable.StopAtBounds
             flickableDirection: Flickable.VerticalFlick
 
-                Rectangle {
-                id: gridbeat
-                anchors.left: parent.left
-                anchors.right: parent.right
-                color: "green"
-                Grid {
-                    id: maingrid
-                    y: 0
-                    anchors.bottomMargin: 0
-                    anchors.fill: parent
-                    columns: noten.count
-                    spacing: 3
-                    Repeater {
-                        y: 0
-                        model: 100 * noten.count
-                        Rectangle {
-                            width: 30
-                            height: piano.height
-                            color: "lightgrey"
-                            Repeater {
-                                model: 4
-                                Rectangle {
-                                    width: 30
-                                    y: index * piano.height / 4
-                                    height: piano.height / 4
-                                    color: "#00000000"
-                                    border.color: "#000000"
+            NotesView {
+            }
+
+            Row {
+                id: piano_roww
+
+                ListView {
+                    orientation: ListView.Horizontal
+                    height: 1000
+                    width: 1000
+
+                    model: noteData
+                    delegate: Rectangle {
+                        height: noteLength * 40 * 4
+                        border { width: 1; color: "black" }
+                        width: 14
+                        property var time: noteTime
+                        property var value: noteValue
+                        property var name: ['C-', 'C#', 'D-', 'D#', 'E-', 'F-', 'F#', 'G-', 'G#', 'A-', 'A#', 'B-']
+                        Text {
+                            text: name[noteValue%12] + (noteValue? Math.round(noteValue/12) : 0)
+                            font.pixelSize: 9
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            drag.target: parent
+                            drag.axis: Drag.XAndYAxis
+                            drag.minimumX: 14
+                            drag.minimumY: 1
+                            onReleased: {
+                                parent.x = Math.round(parent.x / 14) * 14 ;
+                            }
+                        }
+                    }
+                    populate: Transition {
+                        id: dispTrans
+                        SequentialAnimation {
+                            loops: Animation.Infinite
+                            ParallelAnimation {
+                                NumberAnimation {
+                                    property: "y"; to: dispTrans.ViewTransition.item.y  + Math.round(dispTrans.ViewTransition.item.time*100)
+                                    easing.type: Easing.OutBounce; duration: 0
+                                }
+                                NumberAnimation {
+                                    property: "x"; to: Math.round(dispTrans.ViewTransition.item.value*14)
+                                    easing.type: Easing.OutBounce; duration: 0
                                 }
                             }
-
                         }
-
                     }
                 }
             }
+
+
+
+
+
         }
 
         Rectangle {
             id: piano
-            height: 100
+            height: 70
             color: rollwin.color
             ListModel {
-                id: noten
-                ListElement {
-                    note: "c0"
-                }
-                ListElement {
-                    note: "d0"
-                }
-                ListElement {
-                    note: "e0"
-                }
-                ListElement {
-                    note: "f0"
-                }
-                ListElement {
-                    note: "g0"
-                }
-                ListElement {
-                    note: "a0"
-                }
-                ListElement {
-                    note: "h0"
-                }
-                ListElement {
-                    note: "c1"
-                }
-                ListElement {
-                    note: "d1"
-                }
-                ListElement {
-                    note: "e1"
-                }
-                ListElement {
-                    note: "f1"
-                }
-                ListElement {
-                    note: "g1"
-                }
-                ListElement {
-                    note: "a1"
-                }
-                ListElement {
-                    note: "h1"
-                }
-                ListElement {
-                    note: "c2"
-                }
-                ListElement {
-                    note: "d2"
-                }
-                ListElement {
-                    note: "e2"
-                }
-                ListElement {
-                    note: "f2"
-                }
-                ListElement {
-                    note: "g2"
-                }
-                ListElement {
-                    note: "a2"
-                }
-                ListElement {
-                    note: "h2"
-                }
-                ListElement {
-                    note: "c3"
-                }
-                ListElement {
-                    note: "d3"
-                }
-                ListElement {
-                    note: "e3"
-                }
-                ListElement {
-                    note: "f3"
-                }
-                ListElement {
-                    note: "g3"
-                }
-                ListElement {
-                    note: "a3"
-                }
-                ListElement {
-                    note: "h3"
+                id: keys_white
+                Component.onCompleted: {
+                    for (var i = 0; i < (7*9); i++) {
+                        keys_white.append({note: i});
+                    };
                 }
             }
+
+            ListModel {
+                id: keys_black
+                Component.onCompleted: {
+                    for (var i = 0; i < (7*9); i++) {
+                        keys_black.append({note: i});
+                    };
+                }
+            }
+
 
             Component {
                 id: key_white
                 Rectangle {
-                    width: 30
+                    property var names: ['C-', 'D-', 'E-', 'F-', 'G-', 'A-', 'B-'];
+                    //property int ocatve: Math.round(note / 7);
+                    width: 22
                     height: parent.height
                     color: "#FFFFF0" // ivory
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.bottom: parent.bottom
-                        text: note
+                        font.pixelSize: 9
+                        text: names[note%7] + (note == 0? 0: Math.round(note/7))
                     }
                 }
             }
+
+            Component {
+                id: key_black
+                Rectangle {
+                    property var names: ['C#', 'D#', '','F#', 'G#', 'A#',''];
+                    width: 19
+                    height: parent.height -20
+                    color: "#000000"
+                    opacity: ((note%7)==2 || note%7==6)? 0: 1
+                    Text {
+                        color: "#FFFFF0"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.bottom: parent.bottom
+                        font.pixelSize: 9
+                        text: names[note%7] + (note == 0? 0: Math.round(note/7))
+                    }
+                }
+            }
+
             Row {
                 id: piano_row
                 anchors.rightMargin: 0
                 anchors.bottomMargin: 0
-                anchors.leftMargin: 0
+                anchors.leftMargin: 1
                 anchors.topMargin: 0
                 anchors.fill: parent
-                spacing: 3
+                spacing: 2
                 Repeater {
-                    model: noten
+                    model: keys_white
                     delegate: key_white
                 }
             }
 
+            Row {
+                id: piano_row_black
+                anchors.rightMargin: 0
+                anchors.bottomMargin: 0
+                anchors.leftMargin: 15
+                anchors.topMargin: 0
+                anchors.fill: parent
+                spacing: 5
+                Repeater {
+                    model: keys_black
+                    delegate: key_black
+                }
+            }
         }
 
     }
