@@ -2,5 +2,9 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>NotesView.qml</file>
+        <file>BlackKey.qml</file>
+        <file>WhiteKey.qml</file>
+        <file>PianoKey.qml</file>
+        <file>KeyBoard.qml</file>
     </qresource>
 </RCC>

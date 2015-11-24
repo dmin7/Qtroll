@@ -32,9 +32,6 @@ int main(int argc, char *argv[])
     ctxt->setContextProperty("noteData", QVariant::fromValue(noteData));
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
-    //Piano p;
-    //p.show();
-
     return app.exec();
 }
 
