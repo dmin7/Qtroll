@@ -14,6 +14,9 @@ ApplicationWindow {
     opacity: 1
     minimumWidth: 640
     minimumHeight: 480
+
+    property int noteWidth: 25
+
     title: qsTr("qtroll")
 
         menuBar: MenuBar {
@@ -69,13 +72,13 @@ ApplicationWindow {
 
 
 
-        Flickable {
+    Flickable {
         id: flickeverything
         width: parent.width
         height: parent.height
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: flickeverything.height
-        contentWidth: noten.count * 30 + noten.count * maingrid.spacing
+        contentWidth: keys_white.count * noteWidth
         flickableDirection: Flickable.HorizontalFlick
         Flickable {
             id: flickgrid
@@ -92,7 +95,7 @@ ApplicationWindow {
             }
 
             Row {
-                id: piano_roww
+                id: piano_row
 
                 ListView {
                     orientation: ListView.Horizontal
@@ -103,25 +106,26 @@ ApplicationWindow {
                     delegate: Rectangle {
                         height: noteLength * 40 * 4
                         border { width: 1; color: "black" }
-                        width: 14
+                        width: noteWidth
                         property var time: noteTime
                         property var value: noteValue
                         property var name: ['C-', 'C#', 'D-', 'D#', 'E-', 'F-', 'F#', 'G-', 'G#', 'A-', 'A#', 'B-']
                         Text {
                             text: name[noteValue%12] + (noteValue? Math.round(noteValue/12) : 0)
-                            font.pixelSize: 9
+                            font.pixelSize: 8
                         }
                         MouseArea {
                             anchors.fill: parent
                             drag.target: parent
                             drag.axis: Drag.XAndYAxis
-                            drag.minimumX: 14
+                            drag.minimumX: noteWidth
                             drag.minimumY: 1
                             onReleased: {
-                                parent.x = Math.round(parent.x / 14) * 14 ;
+                                parent.x = Math.round(parent.x / noteWidth) * noteWidth ;
                             }
                         }
                     }
+
                     populate: Transition {
                         id: dispTrans
                         SequentialAnimation {
@@ -132,7 +136,7 @@ ApplicationWindow {
                                     easing.type: Easing.OutBounce; duration: 0
                                 }
                                 NumberAnimation {
-                                    property: "x"; to: Math.round(dispTrans.ViewTransition.item.value*14)
+                                    property: "x"; to: Math.round(dispTrans.ViewTransition.item.value*noteWidth)
                                     easing.type: Easing.OutBounce; duration: 0
                                 }
                             }
@@ -140,11 +144,6 @@ ApplicationWindow {
                     }
                 }
             }
-
-
-
-
-
         }
 
         Rectangle {
@@ -173,11 +172,17 @@ ApplicationWindow {
             Component {
                 id: key_white
                 Rectangle {
+                    id: white_rect
                     property var names: ['C-', 'D-', 'E-', 'F-', 'G-', 'A-', 'B-'];
                     //property int ocatve: Math.round(note / 7);
-                    width: 22
+                    width: noteWidth - piano_row_white.spacing
                     height: parent.height
                     color: "#FFFFF0" // ivory
+                    radius: 5
+                    border {
+                        color: "black"
+                        width: 2
+                    }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.bottom: parent.bottom
@@ -191,10 +196,11 @@ ApplicationWindow {
                 id: key_black
                 Rectangle {
                     property var names: ['C#', 'D#', '','F#', 'G#', 'A#',''];
-                    width: 19
+                    width: noteWidth - piano_row_black.spacing
                     height: parent.height -20
                     color: "#000000"
                     opacity: ((note%7)==2 || note%7==6)? 0: 1
+                    radius: 5
                     Text {
                         color: "#FFFFF0"
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -206,13 +212,12 @@ ApplicationWindow {
             }
 
             Row {
-                id: piano_row
+                id: piano_row_white
                 anchors.rightMargin: 0
                 anchors.bottomMargin: 0
                 anchors.leftMargin: 1
                 anchors.topMargin: 0
                 anchors.fill: parent
-                spacing: 2
                 Repeater {
                     model: keys_white
                     delegate: key_white
@@ -233,10 +238,10 @@ ApplicationWindow {
                 }
             }
         }
-
     }
+}
 
-    /* wtf???? nice animations i guess?
+ /*
     ScrollView{
 
            x: 0
@@ -370,7 +375,6 @@ ApplicationWindow {
             }
         }
     */
-}
 
 /*
     Flickable {
