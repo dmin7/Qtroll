@@ -58,3 +58,4 @@ HEADERS += \
 DISTFILES += \
     global.js
 
+OTHER_FILES = content/images/*

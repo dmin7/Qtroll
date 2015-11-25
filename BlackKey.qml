@@ -3,7 +3,7 @@ import QtQuick 2.0
 PianoKey {
     id: blackKey
     width: noteWidth
-    height: parent.height -20
+    height: parent.height * 0.7
     opacity: notes[note % noteCount][1] === '#' ? 1 : 0
     Text {
         color: "#FFFFF0"
@@ -13,9 +13,5 @@ PianoKey {
         text: notes[note % noteCount] + Math.round((note - note % noteCount) / noteCount)
     }
 
-    property string keycolor: "black"
-
-    function getBlackX(){
-        return white_keys.get()
-    }
+    property color keycolor: blackkey_color
 }

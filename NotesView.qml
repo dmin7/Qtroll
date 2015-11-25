@@ -19,9 +19,9 @@ Canvas {
 
     function drawBackground(ctx) {
         //ctx.save();
-        ctx.fillStyle = "#0d0d0f";
+        ctx.fillStyle = grid_color;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = "#dedede";
+        ctx.strokeStyle = gridline_color;
         ctx.beginPath();
         // Horizontal grid lines
         for (var i = 0; i < gridRows; i++) {

@@ -2,6 +2,8 @@ import QtQuick 2.0
 
 PianoKey {
     id: whiteKey
+    property color keycolor: whitekey_color
+
     width: notes[note % noteCount][1] === '#' ? 0 : noteWidth
     height: parent.height
     opacity: notes[note % noteCount][1] === '#' ? 0 : 1
@@ -12,8 +14,6 @@ PianoKey {
         font.pixelSize: 9
         text: notes[note % noteCount] + Math.round((note - note % noteCount) / noteCount)
     }
-
-    property string keycolor: "#FFFFF0" // ivory
 
     /*
     function getKeywidth() {

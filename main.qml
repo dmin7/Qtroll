@@ -7,18 +7,28 @@ import OscServer 1.0
 //import "global.js" as global
 
 ApplicationWindow {
-    id: rollwin
+    id: root
     visible: true
     width: 924
     height: 616
     opacity: 1
     minimumWidth: 640
     minimumHeight: 480
-
-    property int noteWidth: 20
+    property int headerHeight: 50
+    property int noteWidth: 30
     property int numberOctaves: 9
     property int borderWidth: 1
-    property int pianoHeight: 100
+    property int pianoHeight: 200
+
+    //Design
+    property color background_color: "black"
+    property color grid_color: "brown"
+    property color gridline_color: "white"
+    property color whitekey_color: "#FFFFF0"
+    property color blackkey_color: "black"
+    property color header_color: "brown"
+
+
 
     title: qsTr("qtroll")
 
@@ -72,24 +82,28 @@ ApplicationWindow {
         id: osc_server_notes
     }
 
-
-
     Flickable {
         id: flickeverything
         width: parent.width
         height: parent.height
+        anchors.top: header.bottom
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: flickeverything.height
         contentWidth: numberOctaves * 12 * noteWidth
         flickableDirection: Flickable.HorizontalFlick
+        ScrollBar {
+                scrollArea: flickgrid
+                width: 12
+                anchors.top: flickgrid.top
+                anchors.bottom: flickgrid.bottom
+        }
         Flickable {
             id: flickgrid
-            x: 0
-            y: pianoHeight
             width: parent.width
             height: parent.height - pianoHeight
+            y: pianoHeight
             contentWidth: flickgrid.width
-            contentHeight: 10000
+            contentHeight: 128 * 40
             boundsBehavior: Flickable.StopAtBounds
             flickableDirection: Flickable.VerticalFlick
 
@@ -98,8 +112,6 @@ ApplicationWindow {
             }
 
             Row {
-                id: piano_row
-
                 ListView {
                     orientation: ListView.Horizontal
                     height: 1000
@@ -114,7 +126,7 @@ ApplicationWindow {
                         property var value: noteValue
                         property var name: ['C-', 'C#', 'D-', 'D#', 'E-', 'F-', 'F#', 'G-', 'G#', 'A-', 'A#', 'B-']
                         Text {
-                            text: name[noteValue%12] + (noteValue? Math.round(noteValue/12) : 0)
+                            text: name[noteValue%12] + (noteValue? Math.floor(noteValue/12) : 0)
                             font.pixelSize: 8
                         }
                         MouseArea {
@@ -149,6 +161,14 @@ ApplicationWindow {
             }
         }
 
-        KeyBoard{}
+        KeyBoard{
+            id: piano
+        }
+    }
+
+    Header{
+        id: header
+        width: root.width
+        height: headerHeight
     }
 }

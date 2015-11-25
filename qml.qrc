@@ -6,5 +6,8 @@
         <file>WhiteKey.qml</file>
         <file>PianoKey.qml</file>
         <file>KeyBoard.qml</file>
+        <file>Header.qml</file>
+        <file>ScrollBar.qml</file>
+        <file>content/images/scrollbar.png</file>
     </qresource>
 </RCC>
