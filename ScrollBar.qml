@@ -90,7 +90,7 @@ Item {
             return nh + ny;
     }
 
-    Rectangle { anchors.fill: parent; color: "Black"; opacity: 0.3 }
+    Rectangle { anchors.fill: parent; color: "Black"; opacity: 0.5 }
 
     BorderImage {
         source: "content/images/scrollbar.png"

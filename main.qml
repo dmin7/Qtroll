@@ -6,6 +6,7 @@ import OscServer 1.0
 
 //import "global.js" as global
 
+// Root window, main window
 ApplicationWindow {
     id: root
     visible: true
@@ -14,25 +15,29 @@ ApplicationWindow {
     opacity: 1
     minimumWidth: 640
     minimumHeight: 480
-    property int headerHeight: 50
+
+    //Some global Propertas
+    property int headerHeight: 30
     property int noteWidth: 30
     property int numberOctaves: 9
     property int borderWidth: 1
     property int pianoHeight: 200
 
-    //Design
-    property color background_color: "black"
-    property color grid_color: "brown"
-    property color gridline_color: "white"
-    property color whitekey_color: "#FFFFF0"
-    property color blackkey_color: "black"
-    property color header_color: "brown"
+    //Design: COLOR PALETTE EARLY WINTER MORNING
+    property color grid_color: "#C5C7B6"
+    property color gridline_color: "#222028"
+    property color whitekey_color: "#FFF8D3"
+    property color blackkey_color: "#222028"
+    property color header_color: "#C5C7B6"
+    property color button_color: "#FFF8D3"
+    property color button_gradient: "white"
 
 
 
     title: qsTr("qtroll")
 
-        menuBar: MenuBar {
+    /* Urgh Ugly
+    menuBar: MenuBar {
         Menu {
             title: qsTr("File")
             MenuItem {
@@ -64,7 +69,7 @@ ApplicationWindow {
                 onTriggered: Qt.quit()
             }
         }
-    }
+    }*/
 
         OscClient {
         id: osc_client_ctrl
@@ -82,6 +87,7 @@ ApplicationWindow {
         id: osc_server_notes
     }
 
+    //Flicks the Piano and Grid horizontally
     Flickable {
         id: flickeverything
         width: parent.width
@@ -91,12 +97,8 @@ ApplicationWindow {
         contentHeight: flickeverything.height
         contentWidth: numberOctaves * 12 * noteWidth
         flickableDirection: Flickable.HorizontalFlick
-        ScrollBar {
-                scrollArea: flickgrid
-                width: 12
-                anchors.top: flickgrid.top
-                anchors.bottom: flickgrid.bottom
-        }
+        flickDeceleration: 2999
+        //Flicks Grid vertically
         Flickable {
             id: flickgrid
             width: parent.width
@@ -107,10 +109,12 @@ ApplicationWindow {
             boundsBehavior: Flickable.StopAtBounds
             flickableDirection: Flickable.VerticalFlick
 
-            NotesView {
+            //Shows Grid
+            DrawGrid {
                 id: grid
             }
 
+            //Shows NoteData from c++ Files.
             Row {
                 ListView {
                     orientation: ListView.Horizontal
@@ -161,11 +165,21 @@ ApplicationWindow {
             }
         }
 
+        //Piano Part
         KeyBoard{
             id: piano
         }
     }
 
+    //Scrollbar from Qt, disappears when not used, looks better than ScrollView
+    ScrollBar {
+            scrollArea: flickgrid
+            width: 12
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+    }
+
+    //top Part of view with buttons and stuff
     Header{
         id: header
         width: root.width

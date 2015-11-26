@@ -1,11 +1,7 @@
 import QtQuick 2.0
 
-
 Item {
     id: pianoKey
-
-    property int fadeDuration: 30
-
 
     Rectangle {
         id: normal
@@ -15,6 +11,11 @@ Item {
         height: parent.height
         radius: 5
         smooth: true
+        gradient: Gradient {
+            GradientStop { position: -2 ; color: mouse.pressed ? keycolor : grid_color }
+            GradientStop { position: 1 ; color: mouse.pressed ? grid_color : keycolor }
+        }
+
         border{
             width: borderWidth
             color: mouse.pressed ? "white" : "black"

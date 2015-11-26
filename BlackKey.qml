@@ -1,3 +1,7 @@
+/*
+    Same as Whitekey, but in black
+*/
+
 import QtQuick 2.0
 
 PianoKey {

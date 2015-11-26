@@ -1,50 +1,38 @@
+/*
+    Shows our Buttons
+*/
+
 import QtQuick 2.0
-import QtQuick.Controls 1.4
+import OscClient 1.0
+import OscServer 1.0
 
 Rectangle {
-    property int buttonWidth: 100
+    color: header_color
 
-    color: "lightsteelblue"
-
-    ListModel {
-        id: buttonModel
-        ListElement {
-              name: "OSC Button 1"
-              run: "startServer()"
-        }
-        ListElement {
-              name: "OSC Button 2"
-              run: "startClient()"
-        }
-        ListElement {
-              name: "OSC Button 3"
-              run: "Exit()"
-        }
-        ListElement {
-              name: "OSC Button 4"
-              run: "DoSth()"
-        }
+    MyButton{
+        id: start_server
+        text: "start Server"
+        anchors.left: parent.left
+        onClicked: udp_server.start()
     }
+    MyButton{
 
-    Component {
-        id: buttonDelegate
-        Button{
-            id: button
-            height: headerHeight * 0.6
-            text: name + ": " + run
-        }
+        id: start_client
+        text: "start Client"
+        anchors{left: start_server.right; leftMargin: 10}
+        onClicked: udp_client.sendMsg("/renoise/transport/start")
     }
-    ListView {
-            width: parent.width
-            height: parent.height
-            orientation: ListView.Horizontal
-            layoutDirection: Qt.LeftToRight
-            model: buttonModel
-            delegate: buttonDelegate
-            spacing: 10
-            anchors{top: parent.top; bottom: parent.bottom; left: parent.left}
-
+    MyButton{
+        id: stop_client
+        text: "stop Client"
+        anchors{left: start_client.right; leftMargin: 10}
+        onClicked: udp_client.sendMsg("/renoise/transport/stop")
     }
-
+    MyButton{
+        id: quit
+        text: "Quit"
+        anchors{right: parent.right}
+        onClicked: Qt.quit()
+    }
 }
 

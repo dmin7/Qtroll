@@ -1,5 +1,10 @@
 import QtQuick 2.0
 
+/*
+    Drawing the grid in Canvas. Lame
+*/
+
+
 Canvas {
     id: canvas
 
@@ -47,7 +52,7 @@ Canvas {
         var ctx = getContext("2d")
 
         ctx.lineWidth = 1
-        ctx.globalAlpha = 0.7
+        ctx.globalAlpha = 1
 
         drawBackground(ctx)
 
