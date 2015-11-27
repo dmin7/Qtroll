@@ -4,6 +4,7 @@
 
 import QtQuick 2.0
 
+
 PianoKey {
     id: whiteKey
     property color keycolor: whitekey_color

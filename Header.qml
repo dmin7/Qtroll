@@ -11,22 +11,22 @@ Rectangle {
 
     MyButton{
         id: start_server
-        text: "start Server"
+        text: "Start"
         anchors.left: parent.left
-        onClicked: udp_server.start()
+        onClicked: osc_client_ctrl.sendMsg("/renoise/transport/start")
     }
     MyButton{
 
         id: start_client
-        text: "start Client"
+        text: "Stop"
         anchors{left: start_server.right; leftMargin: 10}
-        onClicked: udp_client.sendMsg("/renoise/transport/start")
+        onClicked: osc_client_ctrl.sendMsg("/renoise/transport/stop")
     }
     MyButton{
         id: stop_client
-        text: "stop Client"
+        text: "Note test"
         anchors{left: start_client.right; leftMargin: 10}
-        onClicked: udp_client.sendMsg("/renoise/transport/stop")
+        onClicked: osc_client_notes.sendMsg("/renoise/note")
     }
     MyButton{
         id: quit

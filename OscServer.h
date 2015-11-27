@@ -10,7 +10,7 @@
 #include "oscpack/ip/UdpSocket.h"
 #include "oscpack/ip/IpEndpointName.h"
 
-#define CLIENT_PORT 7000
+//#define CLIENT_PORT 7000
 
 class OscServer : public QObject, public osc::OscPacketListener
 {
@@ -23,7 +23,7 @@ public:
     Q_INVOKABLE void start();
 
     /// listen_port is the port to listen for messages on
-    void setup( int listen_port );
+    Q_INVOKABLE void setup( int listen_port );
 
 protected:
     /// process an incoming osc message and add it to the queue

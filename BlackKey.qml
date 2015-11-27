@@ -16,6 +16,5 @@ PianoKey {
         font.pixelSize: 9
         text: notes[note % noteCount] + Math.round((note - note % noteCount) / noteCount)
     }
-
     property color keycolor: blackkey_color
 }

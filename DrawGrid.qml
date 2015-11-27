@@ -27,20 +27,36 @@ Canvas {
         ctx.fillStyle = grid_color;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.strokeStyle = gridline_color;
-        ctx.beginPath();
         // Horizontal grid lines
         for (var i = 0; i < gridRows; i++) {
+            ctx.beginPath();
             ctx.moveTo(0,  i * gridHeight);
+            if (i%4==0){
+                ctx.lineWidth = 3;
+            }
+
             ctx.lineTo(canvas.width, i * gridHeight);
+            ctx.stroke()
+            if (i%4==0){
+                ctx.lineWidth = 1;
+            }
+
         }
-        ctx.stroke()
 
         // Vertical grid lines
         for (i = 0; i < gridColumns; i++) {
+            ctx.beginPath();
             ctx.moveTo(i * gridWidth, 0);
+            if (i%12==0){
+                ctx.lineWidth = 2;
+            }
             ctx.lineTo(i * gridWidth, canvas.height);
+            if (i%12==0){
+                ctx.lineWidth = 1;
+            }
+            ctx.stroke();
         }
-        ctx.stroke();
+
 
         //ctx.restore();
     }

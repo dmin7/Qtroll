@@ -24,12 +24,12 @@ ApplicationWindow {
     property int pianoHeight: 200
 
     //Design: COLOR PALETTE EARLY WINTER MORNING
-    property color grid_color: "#C5C7B6"
-    property color gridline_color: "#222028"
-    property color whitekey_color: "#FFF8D3"
-    property color blackkey_color: "#222028"
-    property color header_color: "#C5C7B6"
-    property color button_color: "#FFF8D3"
+    property color grid_color: "#42545f"
+    property color gridline_color: "#33444F"
+    property color whitekey_color: "#f8fdff"
+    property color blackkey_color: "#48494b"
+    property color header_color: "#28353d"
+    property color button_color: "#a8e1b0"
     property color button_gradient: "white"
 
 
@@ -71,20 +71,25 @@ ApplicationWindow {
         }
     }*/
 
-        OscClient {
+    OscClient {
         id: osc_client_ctrl
+        Component.onCompleted: {
+            connect("127.0.0.1", 8000);
+        }
     }
 
-        OscServer {
-        id: osc_server_ctrl
-    }
-
-        OscClient {
+    OscClient {
         id: osc_client_notes
+        Component.onCompleted: {
+            connect("127.0.0.1", 8001);
+        }
     }
 
-        OscServer {
-        id: osc_server_notes
+    OscServer {
+        id: osc_server_ctrl
+        Component.onCompleted: {
+            setup(7000);
+        }
     }
 
     //Flicks the Piano and Grid horizontally
@@ -125,6 +130,7 @@ ApplicationWindow {
                     delegate: Rectangle {
                         height: noteLength * 40 * 4
                         border { width: 1; color: "black" }
+                        color: button_color
                         width: noteWidth
                         property var time: noteTime
                         property var value: noteValue
@@ -151,7 +157,7 @@ ApplicationWindow {
                             loops: Animation.Infinite
                             ParallelAnimation {
                                 NumberAnimation {
-                                    property: "y"; to: dispTrans.ViewTransition.item.y  + Math.round(dispTrans.ViewTransition.item.time*100)
+                                    property: "y"; to: dispTrans.ViewTransition.item.y  + Math.round(dispTrans.ViewTransition.item.time*40*4)
                                     easing.type: Easing.OutBounce; duration: 0
                                 }
                                 NumberAnimation {

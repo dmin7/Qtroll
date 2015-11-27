@@ -69,7 +69,7 @@ void OscServer::setup( int listen_port )
 void OscServer::start()
 {
 
-    this->setup(7001);
+    this->setup(this->listen_port);
     this->isStarted = true;
 }
 
@@ -90,9 +90,10 @@ void OscServer::ProcessMessage( const osc::ReceivedMessage &m, const osc::IpEndp
             qDebug("oscserver: recieved transport start!");
 
         }
-        else if (std::strcmp( m.AddressPattern(), "/qtroll/notes" ) == 0 )
+        else if (std::strcmp( m.AddressPattern(), "/qtroll/note" ) == 0 )
         {
-            osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
+            //osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
+            qDebug("oscserver: recieved note!");
 
         } else
         {
