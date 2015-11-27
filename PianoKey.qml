@@ -5,10 +5,10 @@ Item {
 
     Rectangle {
         id: normal
-        color: keycolor
+        color: header_color
         anchors.centerIn: parent
         width: parent.width
-        height: parent.height
+        height: pianoHeight
         radius: 5
         smooth: true
         gradient: Gradient {
@@ -22,8 +22,11 @@ Item {
         }
     }
 
+
     MouseArea {
         id: mouse
         anchors.fill: parent
+        onPressed: osc_client_ctrl.triggerNote(note);
+        onReleased: osc_client_ctrl.triggerNote(note, false);
     }
 }

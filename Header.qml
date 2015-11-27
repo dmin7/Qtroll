@@ -19,13 +19,13 @@ Rectangle {
 
         id: start_client
         text: "Stop"
-        anchors{left: start_server.right; leftMargin: 10}
+        anchors{left: start_server.right; leftMargin: 1}
         onClicked: osc_client_ctrl.sendMsg("/renoise/transport/stop")
     }
     MyButton{
         id: stop_client
         text: "Note test"
-        anchors{left: start_client.right; leftMargin: 10}
+        anchors{left: start_client.right; leftMargin: 1}
         onClicked: osc_client_notes.sendMsg("/renoise/note")
     }
     MyButton{

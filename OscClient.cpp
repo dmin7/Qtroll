@@ -53,3 +53,21 @@ void OscClient::sendMsg(const QString msg)
     stream.Clear();
 
 }
+
+void OscClient::triggerNote(int note, bool note_on)
+{
+    static const int OUTPUT_BUFFER_SIZE = 327680;
+    char buffer[OUTPUT_BUFFER_SIZE];
+    osc::OutboundPacketStream stream(buffer, OUTPUT_BUFFER_SIZE );
+
+    stream << osc::BeginBundleImmediate
+        << osc::BeginMessage( note_on? "/renoise/trigger/note_on" : "/renoise/trigger/note_off"  )
+        << -1 << -1 << note;
+    if (note_on) {
+           stream << 120;
+    }
+    stream << osc::EndMessage << osc::EndBundle;
+
+    this->socket.Send( stream.Data(), stream.Size() );
+    stream.Clear();
+}

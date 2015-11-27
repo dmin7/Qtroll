@@ -6,38 +6,42 @@ import QtQuick 2.0
 
 Item {
     id: piano
-    property var notes :  ['c-', 'c#', 'd-', 'd#', 'e-', 'f-', 'f#', 'g-', 'g#', 'a-', 'a#', 'b-'];
-    property int noteCount : notes.length
+    property var white_notes :  ['c-', 'd-', 'e-', 'f-', 'g-', 'a-', 'b-'];
+    property var black_notes :  ['', 'c#', '', 'd#', '','', 'f#', '', 'g#', '', 'a#', ''];
+    property int noteCount : 7 //per octave
     ListModel {
         id: keys
 
         //Adds Keys to Model
         Component.onCompleted: {
-            for (var i = 0; i < (noteCount * numberOctaves); i++) {
+            for (var i = 0; i < (12 * numberOctaves); i++) {
                 keys.append({note: i});
             };
         }
     }
 
     Rectangle {
-        height: pianoHeight
-        Component {
-            id: delegate
-            Rectangle{
-                width: noteWidth
-                height: pianoHeight
-                color: grid_color
-                BlackKey{}
-                WhiteKey{}
+        color: header_color
 
-            }
-        }
+
         Row {
             id: piano_row
             anchors.fill: parent
+            height: pianoHeight
             Repeater {
                 model: keys
-                delegate: delegate
+                delegate: WhiteKey{}
+            }
+        }
+
+        Row {
+            id: piano_row2
+            anchors.fill: parent
+            height: pianoHeight
+            //anchors.leftMargin: noteWidth
+            Repeater {
+                model: keys
+                delegate: BlackKey{}
             }
         }
     }

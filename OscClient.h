@@ -20,6 +20,7 @@ public:
     explicit OscClient(QObject *parent = 0);
     Q_INVOKABLE void connect(const QString &server, const int port);
     Q_INVOKABLE void sendMsg(const QString msg);
+    Q_INVOKABLE void triggerNote(int note, bool note_on = true);
 
 signals:
 

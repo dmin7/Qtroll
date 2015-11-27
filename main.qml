@@ -17,7 +17,7 @@ ApplicationWindow {
     minimumHeight: 480
 
     //Some global Propertas
-    property int headerHeight: 30
+    property int headerHeight: 25
     property int noteWidth: 30
     property int numberOctaves: 9
     property int borderWidth: 1
@@ -29,47 +29,14 @@ ApplicationWindow {
     property color whitekey_color: "#f8fdff"
     property color blackkey_color: "#48494b"
     property color header_color: "#28353d"
-    property color button_color: "#a8e1b0"
+    property color button_color: "#616b71"
     property color button_gradient: "white"
+    property color note_color: "#c8fdd2"
 
 
 
-    title: qsTr("qtroll")
+    title: qsTr("Qtroll")
 
-    /* Urgh Ugly
-    menuBar: MenuBar {
-        Menu {
-            title: qsTr("File")
-            MenuItem {
-                text: qsTr("&Open")
-                onTriggered: console.log("Open action triggered");
-            }
-            MenuItem {
-                text: qsTr("Exit")
-                onTriggered: Qt.quit();
-            }
-        }
-
-        Menu {
-            title: qsTr("OSC")
-            MenuItem {
-                text: qsTr("&start")
-                onTriggered: udp_client.sendMsg("/renoise/transport/start")
-            }
-            MenuItem {
-                text: qsTr("start serv")
-                onTriggered: udp_server.start()
-            }
-            MenuItem {
-                text: qsTr("&stop")
-                onTriggered: udp_client.sendMsg("/renoise/transport/stop")
-            }
-            MenuItem {
-                text: qsTr("quit")
-                onTriggered: Qt.quit()
-            }
-        }
-    }*/
 
     OscClient {
         id: osc_client_ctrl
@@ -102,7 +69,7 @@ ApplicationWindow {
         contentHeight: flickeverything.height
         contentWidth: numberOctaves * 12 * noteWidth
         flickableDirection: Flickable.HorizontalFlick
-        flickDeceleration: 2999
+        flickDeceleration: 5999
         //Flicks Grid vertically
         Flickable {
             id: flickgrid
@@ -130,12 +97,16 @@ ApplicationWindow {
                     delegate: Rectangle {
                         height: noteLength * 40 * 4
                         border { width: 1; color: "black" }
-                        color: button_color
+                        color: note_color
                         width: noteWidth
+
+                        radius: 5
+                        smooth: true
                         property var time: noteTime
                         property var value: noteValue
                         property var name: ['C-', 'C#', 'D-', 'D#', 'E-', 'F-', 'F#', 'G-', 'G#', 'A-', 'A#', 'B-']
                         Text {
+                            anchors.horizontalCenter: parent.horizontalCenter
                             text: name[noteValue%12] + (noteValue? Math.floor(noteValue/12) : 0)
                             font.pixelSize: 8
                         }

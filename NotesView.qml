@@ -1,10 +1,5 @@
 import QtQuick 2.0
 
-/*
-    Drawing the grid in Canvas. Lame
-*/
-
-
 Canvas {
     id: canvas
 
@@ -24,39 +19,23 @@ Canvas {
 
     function drawBackground(ctx) {
         //ctx.save();
-        ctx.fillStyle = grid_color;
+        ctx.fillStyle = "#0d0d0f";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = gridline_color;
+        ctx.strokeStyle = "#dedede";
+        ctx.beginPath();
         // Horizontal grid lines
         for (var i = 0; i < gridRows; i++) {
-            ctx.beginPath();
             ctx.moveTo(0,  i * gridHeight);
-            if (i%4==0){
-                ctx.lineWidth = 3;
-            }
-
             ctx.lineTo(canvas.width, i * gridHeight);
-            ctx.stroke()
-            if (i%4==0){
-                ctx.lineWidth = 1;
-            }
-
         }
+        ctx.stroke()
 
         // Vertical grid lines
         for (i = 0; i < gridColumns; i++) {
-            ctx.beginPath();
             ctx.moveTo(i * gridWidth, 0);
-            if (i%12==0){
-                ctx.lineWidth = 2;
-            }
             ctx.lineTo(i * gridWidth, canvas.height);
-            ctx.stroke();
-            if (i%12==0){
-                ctx.lineWidth = 1;
-            }
         }
-
+        ctx.stroke();
 
         //ctx.restore();
     }
@@ -68,7 +47,7 @@ Canvas {
         var ctx = getContext("2d")
 
         ctx.lineWidth = 1
-        ctx.globalAlpha = 1
+        ctx.globalAlpha = 0.7
 
         drawBackground(ctx)
 
