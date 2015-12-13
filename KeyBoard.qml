@@ -22,7 +22,7 @@ Item {
 
     Rectangle {
         color: header_color
-
+        height: pianoHeight
 
         Row {
             id: piano_row

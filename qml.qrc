@@ -10,5 +10,6 @@
         <file>ScrollBar.qml</file>
         <file>content/images/scrollbar.png</file>
         <file>MyButton.qml</file>
+        <file>DrawNotes.qml</file>
     </qresource>
 </RCC>

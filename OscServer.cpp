@@ -1,4 +1,5 @@
 #include "OscServer.h"
+#include "QDebug"
 
 #include <thread>
 
@@ -45,7 +46,7 @@ void OscServer::setup( int listen_port )
     }
 
     // create socket
-    auto socket = new osc::UdpListeningReceiveSocket( osc::IpEndpointName( osc::IpEndpointName::ANY_ADDRESS, listen_port ), this);
+    auto socket = new osc::UdpListeningReceiveSocket( osc::IpEndpointName( "0.0.0.0", listen_port ), this);
     auto deleter = [](osc::UdpListeningReceiveSocket*socket){
         // tell the socket to shutdown
         socket->Break();
@@ -64,6 +65,7 @@ void OscServer::setup( int listen_port )
     listen_thread.detach();
 
     this->listen_port = listen_port;
+    qDebug() << "OSC server started on port: " << this->listen_port;
 }
 
 void OscServer::start()
@@ -93,16 +95,31 @@ void OscServer::ProcessMessage( const osc::ReceivedMessage &m, const osc::IpEndp
         else if (std::strcmp( m.AddressPattern(), "/qtroll/note" ) == 0 )
         {
             //osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
-            qDebug("oscserver: recieved note!");
+            osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
+            osc::int32 a1;
+            float a2;
+            float a3;
+            osc::int32 a4;
+            args >> a1 >> a2 >> a3 >> a4 >> osc::EndMessage;
 
-        } else
+            emit receiveNote(a1,a2,a3);
+            qDebug() << "oscserver: recieved note! val: " << a1 << " time: " << a2 << " length: " << a3 << " instr: " << a4;
+
+        }
+        else if (std::strcmp( m.AddressPattern(), "/qtroll/clear" ) == 0 )
+        {
+            qDebug("recieved clear!");
+            emit clear();
+        }
+        else
         {
             qDebug(m.AddressPattern());
-        }
-            ;
+        };
     } catch( osc::Exception& e )
     {
         qDebug("oscserver: Exception: %s", e.what());
     };
 }
+
+
 

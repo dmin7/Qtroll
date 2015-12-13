@@ -23,6 +23,7 @@ public:
     Q_INVOKABLE void triggerNote(int note, bool note_on = true);
 
 signals:
+    void test();
 
 public slots:
 

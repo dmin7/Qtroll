@@ -1,11 +1,20 @@
 #include "note.h"
 
-Note::Note(QObject *parent) : QObject(parent)
+Note::Note(QObject *parent) :
+    QObject(parent),
+    m_value(0),
+    m_time(0),
+    m_length(0),
+    m_instr(0),
+    m_track(0),
+    m_pattern(0),
+    m_is_selected(false),
+    m_deleted(false)
 {
 
 }
-
-Note::Note(QObject *parent, int value, float time, float length, int instr, int track, int pattern)
+/*
+Note::Note(QObject *parent, int value, float time, float length, int instr, int track, int pattern) : QObject(parent)
 {
     this->m_value = value;
     this->m_time = time;
@@ -15,7 +24,7 @@ Note::Note(QObject *parent, int value, float time, float length, int instr, int 
     this->m_pattern = pattern;
     this->m_is_selected = false;
 }
-
+*/
 int Note::noteValue() const
 {
     return m_value;
@@ -65,6 +74,19 @@ void Note::setNoteIsSelected(bool sel)
     if (sel != m_is_selected) {
         m_is_selected = sel;
         emit noteIsSelectedChanged();
+    }
+}
+
+bool Note::noteDeleted() const
+{
+    return m_deleted;
+}
+
+void Note::setNoteDeleted(bool del)
+{
+    if(!(del == m_deleted)) {
+        m_deleted = del;
+        emit noteDeletedChanged();
     }
 }
 

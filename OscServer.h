@@ -25,11 +25,15 @@ public:
     /// listen_port is the port to listen for messages on
     Q_INVOKABLE void setup( int listen_port );
 
+
+
 protected:
     /// process an incoming osc message and add it to the queue
     void ProcessMessage( const osc::ReceivedMessage &m, const osc::IpEndpointName& remoteEndpoint );
 
 signals:
+    void clear();
+    void receiveNote(int val, float time, float len);
 
 public slots:
 

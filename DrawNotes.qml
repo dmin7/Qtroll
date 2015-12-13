@@ -1,12 +1,7 @@
 import QtQuick 2.0
 
-/*
-    Drawing the grid in Canvas. Lame
-*/
-
-
 Canvas {
-    id: canvas
+    id: notes_canvas
 
     property int gridRows: Math.round(pattern.patternLength * pattern.patternLpb)
     property int gridColumns: 128
@@ -43,19 +38,7 @@ Canvas {
 
         }
 
-        // Vertical grid lines
-        for (i = 0; i < gridColumns; i++) {
-            ctx.beginPath();
-            ctx.moveTo(i * gridWidth, 0);
-            if (i%12==0){
-                ctx.lineWidth = 2;
-            }
-            ctx.lineTo(i * gridWidth, canvas.height);
-            ctx.stroke();
-            if (i%12==0){
-                ctx.lineWidth = 1;
-            }
-        }
+
 
 
         //ctx.restore();
@@ -74,6 +57,4 @@ Canvas {
 
     }
 }
-
-
 

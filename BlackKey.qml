@@ -6,7 +6,7 @@ import QtQuick 2.0
 
 PianoKey {
     id: blackKey
-    height: pianoHeight * 0.7
+    height: pianoHeight * 0.334
     opacity: black_notes[note % 12][1] === '#' ? 1 : 0
     width: noteWidth
     //width: black_notes[note % 12][1] === '#' ? noteWidth : 0
