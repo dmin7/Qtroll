@@ -6,7 +6,8 @@ Item {
     Rectangle {
         id: normal
         color: header_color
-        anchors.centerIn: parent
+        anchors.bottom: parent.bottom
+        anchors.top: parent.top
         width: parent.width
         height: pianoHeight
         radius: 5

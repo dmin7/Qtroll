@@ -111,7 +111,8 @@ ApplicationWindow {
         height: parent.height
         anchors.top: header.bottom
         boundsBehavior: Flickable.StopAtBounds
-        contentHeight: headerHeight + pianoHeight + Math.round(pattern.patternLength * pattern.patternLpb * 40)
+        contentHeight: parent.height
+
         contentWidth: numberOctaves * 12 * noteWidth
         flickableDirection: Flickable.HorizontalFlick
         flickDeceleration: 5999
@@ -122,7 +123,7 @@ ApplicationWindow {
             height: parent.height - pianoHeight
             y: pianoHeight
             contentWidth: flickgrid.width
-            contentHeight: headerHeight + pianoHeight + Math.round(pattern.patternLength * pattern.patternLpb * 40)
+            contentHeight: pattern.patternLength * pattern.patternLpb * 40
             boundsBehavior: Flickable.StopAtBounds
             flickableDirection: Flickable.VerticalFlick
 
