@@ -1,5 +1,6 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtGraphicalEffects 1.0
 
 import OscClient 1.0
 import OscServer 1.0
@@ -17,6 +18,7 @@ ApplicationWindow {
     opacity: 1
     minimumWidth: 640
     minimumHeight: 480
+    color: header_color
 
     //Some global Propertas
     property int headerHeight: 25
@@ -65,8 +67,13 @@ ApplicationWindow {
         }
         onReceiveNote: {
             console.log(val);
-            pattern.add_note(val, time, len);
+            pattern.add_note(val, time, len, vol, instr, line, col);
             pattern.count();
+            note_view.model = pattern.notes;
+        }
+
+        onNewPattern: {
+            pattern.newPattern(length, lpb);
             note_view.model = pattern.notes;
         }
 
@@ -129,11 +136,15 @@ ApplicationWindow {
             MouseArea {
                 anchors.fill: parent
                 onDoubleClicked: {
-                    pattern.add_note(Math.round(mouseX / noteWidth), mouseY / (40*4), 1);
+                    pattern.add_note(Math.round(mouseX / noteWidth), mouseY / (40*4), 1, 120, -1, -1, -1);
                     pattern.count();
                     note_view.model = pattern.notes;
 
                 }
+            }
+
+            Image {
+                source: "content/images/green.jpg"
             }
 
             //Shows Grid
@@ -154,6 +165,7 @@ ApplicationWindow {
                     delegate: Rectangle {
                         property var note_value: noteValue
                         visible: !noteDeleted
+                        opacity: 0.5 + (0.5 * (noteVolume / 127))
 
                         height: noteLength * 40 * 4
                         border { width: 1; color: "black" }
@@ -175,6 +187,13 @@ ApplicationWindow {
                             font.pixelSize: 8
                         }
 
+                        HueSaturation {
+                            anchors.fill: parent
+                            source: parent
+                            saturation: - 1 + (0.7 * Math.min(noteVolume) / 127)
+                            lightness: - 0.5 + (0.7 * Math.min(noteVolume, 127) / 127)
+                            hue: -1 + (noteValue%12 / 24)
+                        }
 
                         MouseArea {
                             property int oldMouseY
@@ -188,17 +207,30 @@ ApplicationWindow {
 
 
                             onWheel: {
-                                if (wheel.angleDelta.y > 0) {
-                                    pattern.notes[index].noteLength =
-                                            pattern.notes[index].noteLength + 0.05
-                                } else if (pattern.notes[index].noteLength > 0.1) {
-                                    pattern.notes[index].noteLength =
-                                            pattern.notes[index].noteLength - 0.05
+                                if (wheel.modifiers & Qt.ControlModifier) {
+                                    if (wheel.angleDelta.y > 0) {
+                                        pattern.notes[index].noteVolume =
+                                                Math.min(pattern.notes[index].noteVolume + 1, 127)
+                                    } else if (pattern.notes[index].noteVolume > 0) {
+                                        pattern.notes[index].noteVolume =
+                                                pattern.notes[index].noteVolume - 1
+                                    }
+                                } else {
+
+                                    if (wheel.angleDelta.y > 0) {
+                                        pattern.notes[index].noteLength =
+                                                pattern.notes[index].noteLength + 0.05
+                                    } else if (pattern.notes[index].noteLength > 0.1) {
+                                        pattern.notes[index].noteLength =
+                                                pattern.notes[index].noteLength - 0.05
+                                    }
                                 }
                             }
 
                             onReleased: {
-                                //parent.x = Math.round(parent.x / noteWidth) * noteWidth;
+                                // manual snap to grid
+                                parent.x = Math.round(parent.x / noteWidth) * noteWidth;
+                                // adjust model
                                 pattern.notes[index].noteValue = Math.round(parent.x / noteWidth);
                                 pattern.notes[index].noteTime = parent.y / (40*4)
                                 console.log("note moved noteValue: " + pattern.notes[index].noteValue);

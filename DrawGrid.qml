@@ -24,8 +24,8 @@ Canvas {
 
     function drawBackground(ctx) {
         //ctx.save();
-        ctx.fillStyle = grid_color;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        //ctx.fillStyle = grid_color;
+        //ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.strokeStyle = gridline_color;
         // Horizontal grid lines
         for (var i = 0; i < gridRows; i++) {

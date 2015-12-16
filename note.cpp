@@ -64,6 +64,58 @@ void Note::setNoteLength(float length)
     }
 }
 
+int Note::noteVolume() const
+{
+    return m_volume;
+}
+
+void Note::setNoteVolume(int vol)
+{
+    if (vol != m_volume) {
+        m_volume = vol;
+        emit noteVolumeChanged();
+    }
+}
+
+int Note::noteInstrument() const
+{
+    return m_instr;
+}
+
+void Note::setNoteInstrument(int instr)
+{
+    if (instr != m_instr) {
+        m_instr = instr;
+        emit noteInstrumentChanged();
+    }
+}
+
+int Note::noteLine() const
+{
+    return m_line;
+}
+
+void Note::setNoteLine(int line)
+{
+    if (line != m_line) {
+        m_line = line;
+        emit noteLineChanged();
+    }
+}
+
+int Note::noteColumn() const
+{
+    return m_column;
+}
+
+void Note::setNoteColumn(int col)
+{
+    if (col != m_column) {
+        m_column = col;
+        emit noteColumnChanged();
+    }
+}
+
 bool Note::noteIsSelected() const
 {
     return m_is_selected;

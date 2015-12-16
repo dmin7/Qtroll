@@ -33,7 +33,8 @@ protected:
 
 signals:
     void clear();
-    void receiveNote(int val, float time, float len);
+    void newPattern(int length, int lpb);
+    void receiveNote(int val, float time, float len, int vol, int instr, int line, int col);
 
 public slots:
 

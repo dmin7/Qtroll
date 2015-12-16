@@ -96,20 +96,33 @@ void OscServer::ProcessMessage( const osc::ReceivedMessage &m, const osc::IpEndp
         {
             //osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
             osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
-            osc::int32 a1;
-            float a2;
-            float a3;
-            osc::int32 a4;
-            args >> a1 >> a2 >> a3 >> a4 >> osc::EndMessage;
+            osc::int32 noteValue;
+            float noteTime;
+            float noteLength;
+            osc::int32 noteVolume;
+            osc::int32 noteInstrument;
+            osc::int32 noteLine;
+            osc::int32 noteColumn;
+            // read values from osc message
+            args >> noteValue >> noteTime >> noteLength >> noteVolume >> noteInstrument >> noteLine >> noteColumn >> osc::EndMessage;
 
-            emit receiveNote(a1,a2,a3);
-            qDebug() << "oscserver: recieved note! val: " << a1 << " time: " << a2 << " length: " << a3 << " instr: " << a4;
+            emit receiveNote(noteValue, noteTime, noteLength, noteVolume, noteInstrument, noteLine, noteColumn);
+            qDebug() << "oscserver: recieved note! val: " << noteValue << " time: " << noteTime << " length: " << noteLength << " instr: " << noteVolume;
 
         }
         else if (std::strcmp( m.AddressPattern(), "/qtroll/clear" ) == 0 )
         {
             qDebug("recieved clear!");
             emit clear();
+        }
+        else if (std::strcmp( m.AddressPattern(), "/qtroll/new_pattern" ) == 0 )
+        {
+            osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
+            osc::int32 pattern_length;
+            osc::int32 lpb;
+            args >> pattern_length >> lpb >> osc::EndMessage;
+            qDebug() << "OscServer: recieved new_pattern message! length: " << pattern_length << " lpb: " << lpb;
+            emit newPattern(pattern_length, lpb);
         }
         else
         {

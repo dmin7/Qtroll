@@ -16,12 +16,25 @@ void Pattern::count()
     qDebug() << "number of notes: " << m_notes.count();
 }
 
-void Pattern::add_note(int val, float time, float len)
+void Pattern::newPattern(int length, int lpb)
+{
+    m_notes.clear();
+    m_length = length;
+    m_lpb = lpb;
+}
+
+
+
+void Pattern::add_note(int val, float time, float len, int vol, int instr, int line, int col)
 {
     Note *note = new Note();
     note->setNoteValue(val);
     note->setNoteLength(len);
     note->setNoteTime(time);
+    note->setNoteVolume(vol);
+    note->setNoteInstrument(instr);
+    note->setNoteLine(line);
+    note->setNoteColumn(col);
     m_notes.append(note);
 }
 

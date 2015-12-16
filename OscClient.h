@@ -21,6 +21,7 @@ public:
     Q_INVOKABLE void connect(const QString &server, const int port);
     Q_INVOKABLE void sendMsg(const QString msg);
     Q_INVOKABLE void triggerNote(int note, bool note_on = true);
+    //Q_INVOKABLE void sendNote(int val, float time, float length, int vol);
 
 signals:
     void test();

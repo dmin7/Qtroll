@@ -58,6 +58,8 @@ HEADERS += \
     pattern.h
 
 DISTFILES += \
-    global.js
+    global.js \
+    content/images/green.jpg \
+    content/images/nami.png
 
 OTHER_FILES = content/images/*
