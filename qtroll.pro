@@ -11,8 +11,6 @@ SOURCES += main.cpp \
     oscpack/osc/OscTypes.cpp \
     OscClient.cpp \
     OscServer.cpp \
-    pianokey.cpp \
-    piano.cpp \
     note.cpp \
     pattern.cpp
 
@@ -52,8 +50,6 @@ HEADERS += \
     oscpack/osc/OscTypes.h \
     OscClient.h \
     OscServer.h \
-    pianokey.h \
-    piano.h \
     note.h \
     pattern.h
 

@@ -26,8 +26,6 @@ Item {
 
         Row {
             id: piano_row
-            anchors.fill: parent
-            height: pianoHeight
             Repeater {
                 model: keys
                 delegate: WhiteKey{}
@@ -36,9 +34,6 @@ Item {
 
         Row {
             id: piano_row2
-            anchors.fill: parent
-            height: pianoHeight
-            //anchors.leftMargin: noteWidth
             Repeater {
                 model: keys
                 delegate: BlackKey{}
