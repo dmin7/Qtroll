@@ -13,18 +13,7 @@ Note::Note(QObject *parent) :
 {
 
 }
-/*
-Note::Note(QObject *parent, int value, float time, float length, int instr, int track, int pattern) : QObject(parent)
-{
-    this->m_value = value;
-    this->m_time = time;
-    this->m_length = length;
-    this->m_instr = instr;
-    this->m_track = track;
-    this->m_pattern = pattern;
-    this->m_is_selected = false;
-}
-*/
+
 int Note::noteValue() const
 {
     return m_value;
@@ -87,6 +76,7 @@ void Note::setNoteDeleted(bool del)
     if(!(del == m_deleted)) {
         m_deleted = del;
         emit noteDeletedChanged();
+        delete this;
     }
 }
 

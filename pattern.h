@@ -19,9 +19,9 @@ public:
 
     /* qml accessible methods */
     Q_INVOKABLE void clear();
-    Q_INVOKABLE void count();
+    Q_INVOKABLE int count();
     Q_INVOKABLE void add_note(int val, float time, float len);
-
+    Q_INVOKABLE void delete_note(int index);
     /* setters and getters */
     float patternLength();
     int patternLpb();

@@ -11,9 +11,10 @@ void Pattern::clear()
     m_notes.clear();
 }
 
-void Pattern::count()
+int Pattern::count()
 {
-    qDebug() << "number of notes: " << m_notes.count();
+    //qDebug() << "number of notes: " << m_notes.count();
+    return m_notes.count();
 }
 
 void Pattern::add_note(int val, float time, float len)
@@ -23,6 +24,12 @@ void Pattern::add_note(int val, float time, float len)
     note->setNoteLength(len);
     note->setNoteTime(time);
     m_notes.append(note);
+}
+
+void Pattern::delete_note(int index)
+{
+    m_notes.removeAt(index);
+    qDebug() << "removed Note: " << m_notes.count();
 }
 
 

@@ -6,7 +6,6 @@ import OscServer 1.0
 import Pattern 1.0
 import Note 1.0
 
-//import "global.js" as global
 
 // Root window, main window
 ApplicationWindow {
@@ -35,7 +34,7 @@ ApplicationWindow {
     property color button_gradient: "white"
     property color note_color: "#c8fdd2"
 
-
+    property var selectedNotes: []
 
     title: qsTr("Qtroll")
 
@@ -76,14 +75,6 @@ ApplicationWindow {
         }
     }
 
-    Note {
-        id: test
-        noteValue: 12
-        noteTime: 1
-        noteLength: 1.2
-
-    }
-
     Pattern {
         id: pattern
         patternLength: 64
@@ -102,7 +93,6 @@ ApplicationWindow {
             }
         ]
     }
-
 
     //Flicks the Piano and Grid horizontally
     Flickable {
@@ -131,64 +121,147 @@ ApplicationWindow {
                 anchors.fill: parent
                 onDoubleClicked: {
                     pattern.add_note(Math.round(mouseX / noteWidth), mouseY / (40*4), 1);
-                    pattern.count();
                     note_view.model = pattern.notes;
-
                 }
             }
 
             //Shows Grid
             DrawGrid {
                 id: grid
+                // press space to select multiple keys
+                Item{
+                    focus: true
+                    Keys.onPressed: {
+                        if (event.key === Qt.Key_Space) {
+                            selectArea.enabled = true
+                            flickeverything.interactive = false;
+                            flickgrid.interactive = false;
+                            event.accepted = true;
+                        }
+                    }
+                    Keys.onReleased: {
+                        if (event.key === Qt.Key_Space) {
+                            selectArea.enabled = false
+                            flickeverything.interactive = true;
+                            flickgrid.interactive = true;
+                            event.accepted = true;
+                        }
+                    }
+                }
+                MouseArea {
+                    id: selectArea;
+                    anchors.fill: parent;
+                    enabled: false
+                    onPressed: {
+                            if (highlightItem !== null) {
+                                // if there is already a selection, delete it
+                                highlightItem.destroy ();
+                                var lenght = selectedNotes.length
+                                while (lenght-- > 0) {
+                                    selectedNotes.pop();
+                                }
+
+                            }
+                            // create a new rectangle at the wanted position
+                            highlightItem = highlightComponent.createObject (selectArea, {
+                                "x" : mouse.x, "y" : mouse.y
+                            });
+                    }
+                    onPositionChanged: {
+                        highlightItem.width = (Math.abs (mouse.x - highlightItem.x));
+                        highlightItem.height = (Math.abs (mouse.y - highlightItem.y));
+                    }
+                    onReleased: {
+                       var noteVal1 = Math.round(highlightItem.x / noteWidth);
+                       var noteVal2 = Math.round((highlightItem.x + highlightItem.width) / noteWidth);
+                       var noteTime1 = highlightItem.y / (40*4);
+                       var noteTime2 = (highlightItem.y + highlightItem.height) / (40*4);
+                       console.log("x1 : x2 " + noteVal1 + " : " + noteVal2);
+                       console.log("y1 : y2 " + noteTime1 + " : " + noteTime2);
+                       for (var i = 0; i < pattern.count(); i++){
+                            if(pattern.notes[i].noteValue > noteVal1 && pattern.notes[i].noteValue < noteVal2){
+                                if(pattern.notes[i].noteTime  > noteTime1 && pattern.notes[i].noteTime < noteTime2){
+                                    selectedNotes.push(i);
+                                }
+                            }
+                        };
+                       console.log("selected elements:  " + selectedNotes);
+
+                    }
+                    property Rectangle highlightItem : null;
+                    Component {
+                        id: highlightComponent;
+
+                        Rectangle {
+                            id: selectRectangle
+                            color: note_color;
+                            opacity: 0.2;
+                        }
+                    }
+                }
             }
 
             //Shows NoteData from c++ Files.
 
-            //Row {
-                Repeater {
-                    id: note_view
-                    //orientation: ListView.Horizontal
-                    height: 1000
-                    width: 1000
+            Repeater {
+                id: note_view
+                //orientation: ListView.Horizontal
+                height: 1000
+                width: 1000
+                model: pattern.notes
+                delegate: Rectangle {
+                    property var note_value: noteValue
+                    visible: !noteDeleted
 
-                    model: pattern.notes
-                    delegate: Rectangle {
-                        property var note_value: noteValue
-                        visible: !noteDeleted
+                    height: noteLength * 40 * 4
+                    border { width: 1; color: "black" }
+                    color: note_color
+                    width: noteWidth
 
-                        height: noteLength * 40 * 4
-                        border { width: 1; color: "black" }
-                        color: note_color
-                        width: noteWidth
+                    y: noteTime * 40 * 4
+                    x: (noteValue) * noteWidth
 
-                        y: noteTime * 40 * 4
-                        x: (noteValue) * noteWidth
-
-                        radius: 5
-                        smooth: true
-                        property var time: noteTime
-                        property var value: noteValue
-                        property var name: ['C-', 'C#', 'D-', 'D#', 'E-', 'F-', 'F#', 'G-', 'G#', 'A-', 'A#', 'B-']
-                        Text {
-                            id: text
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            text: name[noteValue%12] + (noteValue? Math.floor(noteValue/12) : 0)
-                            font.pixelSize: 8
-                        }
+                    radius: 5
+                    smooth: true
+                    property var time: noteTime
+                    property var value: noteValue
+                    property var name: ['C-', 'C#', 'D-', 'D#', 'E-', 'F-', 'F#', 'G-', 'G#', 'A-', 'A#', 'B-']
+                    Text {
+                        id: text
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: name[noteValue%12] + (noteValue? Math.floor(noteValue/12) : 0)
+                        font.pixelSize: 8
+                    }
 
 
-                        MouseArea {
-                            property int oldMouseY
-                            anchors.fill: parent
-                            drag.target: parent
-                            drag.axis: Drag.XAndYAxis
-                            drag.minimumX: noteWidth
-                            drag.minimumY: 1
-                            acceptedButtons: Qt.LeftButton | Qt.RightButton
-                            hoverEnabled: true
+                    MouseArea {
+                        property int oldMouseY
+                        anchors.fill: parent
+                        drag.target: parent
+                        drag.axis: Drag.XAndYAxis
+                        drag.minimumX: 0
+                        drag.minimumY: 1
+                        acceptedButtons: Qt.LeftButton | Qt.RightButton
+                        hoverEnabled: true
 
 
-                            onWheel: {
+                        onWheel: {
+                            var isSelectedNote
+                            for(var i = 0; i < selectedNotes.length; i++){
+                                if (selectedNotes[i] === index) isSelectedNote = true;
+                            }
+                            if (selectedNotes.length && isSelectedNote){
+                                for(var i = 0; i < selectedNotes.length; i++){
+                                    if (wheel.angleDelta.y > 0) {
+                                        pattern.notes[selectedNotes[i]].noteLength =
+                                                pattern.notes[selectedNotes[i]].noteLength + 0.05
+                                    } else if (pattern.notes[index].noteLength > 0.1) {
+                                        pattern.notes[selectedNotes[i]].noteLength =
+                                                pattern.notes[selectedNotes[i]].noteLength - 0.05
+                                    }
+                                }
+                            }
+                            else{
                                 if (wheel.angleDelta.y > 0) {
                                     pattern.notes[index].noteLength =
                                             pattern.notes[index].noteLength + 0.05
@@ -197,21 +270,36 @@ ApplicationWindow {
                                             pattern.notes[index].noteLength - 0.05
                                 }
                             }
+                        }
 
-                            onReleased: {
-                                //parent.x = Math.round(parent.x / noteWidth) * noteWidth;
+                        onReleased: {
+                            var isSelectedNote
+                            for(var i = 0; i < selectedNotes.length; i++){
+                                if (selectedNotes[i] === index) isSelectedNote = true;
+                            }
+                            if (selectedNotes.length && isSelectedNote){
+                                var noteValSelected = pattern.notes[index].noteValue
+                                var noteTimeSelected = pattern.notes[index].noteTime
+                                for(var i = 0; i < selectedNotes.length; i++){
+                                    console.log("note moved noteValue: " + pattern.notes[selectedNotes[i]].noteValue);
+                                    pattern.notes[selectedNotes[i]].noteValue = Math.round(parent.x / noteWidth) + (pattern.notes[selectedNotes[i]].noteValue - noteValSelected);
+                                    pattern.notes[selectedNotes[i]].noteTime = parent.y / (40*4) + (pattern.notes[selectedNotes[i]].noteTime - noteTimeSelected);
+                                }
+                            }
+                            else {
                                 pattern.notes[index].noteValue = Math.round(parent.x / noteWidth);
                                 pattern.notes[index].noteTime = parent.y / (40*4)
                                 console.log("note moved noteValue: " + pattern.notes[index].noteValue);
                             }
+                        }
 
-                            onDoubleClicked: {
-                                // TODO: remove item
-                                pattern.notes[index].noteDeleted = true;
-                            }
+                        onDoubleClicked: {
+                            // TODO: remove item
+                            //pattern.notes[index].noteDeleted = true;
+                            //pattern.delete_note(index);
                         }
                     }
-                //}
+                }
             }
 
         }
