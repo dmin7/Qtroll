@@ -94,6 +94,35 @@ ApplicationWindow {
         ]
     }
 
+    // press space to select multiple keys
+    // press ctrl to enable zoom with mousewheel
+    Item{
+        focus: true
+        Keys.onPressed: {
+            flickeverything.interactive = false;
+            flickgrid.interactive = false;
+            if (event.key === Qt.Key_Space) {
+                selectArea.enabled = true
+                event.accepted = true;
+            }
+            if (event.key === Qt.Key_Control){
+                zoom.enabled = true
+            }
+
+        }
+        Keys.onReleased: {
+            flickeverything.interactive = true;
+            flickgrid.interactive = true;
+            if (event.key === Qt.Key_Space) {
+                selectArea.enabled = false
+                event.accepted = true;
+            }
+            if (event.key === Qt.Key_Control){
+                zoom.enabled = false
+            }
+        }
+    }
+
     //Flicks the Piano and Grid horizontally
     Flickable {
         id: flickeverything
@@ -102,10 +131,31 @@ ApplicationWindow {
         anchors.top: header.bottom
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: parent.height
-
         contentWidth: numberOctaves * 12 * noteWidth
         flickableDirection: Flickable.HorizontalFlick
         flickDeceleration: 5999
+
+        MouseArea {
+            id: zoom
+            anchors.fill: parent
+            enabled: false
+            onWheel: {
+                 if (wheel.angleDelta.y > 0) {
+                     /* crasht bei mir meistens wenn ichs größer mach und zeichnet Grid nicht, verkleinern geht */
+                     if(noteWidth < 40){
+                         noteWidth += 5
+                         pianoHeight += 30
+                     }
+                 }
+                 else{
+                     if(noteWidth > 15){
+                         noteWidth -= 5
+                         pianoHeight -= 30
+                     }
+                 }
+             }
+        }
+
         //Flicks Grid vertically
         Flickable {
             id: flickgrid
@@ -128,26 +178,6 @@ ApplicationWindow {
             //Shows Grid
             DrawGrid {
                 id: grid
-                // press space to select multiple keys
-                Item{
-                    focus: true
-                    Keys.onPressed: {
-                        if (event.key === Qt.Key_Space) {
-                            selectArea.enabled = true
-                            flickeverything.interactive = false;
-                            flickgrid.interactive = false;
-                            event.accepted = true;
-                        }
-                    }
-                    Keys.onReleased: {
-                        if (event.key === Qt.Key_Space) {
-                            selectArea.enabled = false
-                            flickeverything.interactive = true;
-                            flickgrid.interactive = true;
-                            event.accepted = true;
-                        }
-                    }
-                }
                 MouseArea {
                     id: selectArea;
                     anchors.fill: parent;
