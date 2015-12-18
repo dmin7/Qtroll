@@ -51,7 +51,7 @@ function show_config()
             notifier = configUpdated
           },
      },
-     
+     --[[
      vb:horizontal_aligner { 
         mode = "justify",
         vb:text { text = "PORT client notes: " },
@@ -61,7 +61,7 @@ function show_config()
             bind = prefs.client_port_notes,
             notifier = configUpdated
           },
-     },
+     },]]
      
      vb:horizontal_aligner { 
         mode = "justify",

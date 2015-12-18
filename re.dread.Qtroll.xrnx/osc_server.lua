@@ -1,10 +1,11 @@
 class 'OscServer'
   function OscServer:__init(port, callback)
-    self.hostname = "localhost"
+    self.hostname = "0.0.0.0"
     self.port = port
     self.server = nil
     self.socket_error = nil
     self.running = false
+    self.callback = callback
     self:start()
   end
 
@@ -39,7 +40,7 @@ class 'OscServer'
           else
             -- never will get in here
           end
-          callback(message_or_bundle)
+          self.callback(message_or_bundle)
           
         else
           print(("Got invalid OSC data, or data which is not " .. 

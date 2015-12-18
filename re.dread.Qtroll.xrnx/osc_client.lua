@@ -22,6 +22,7 @@ class 'OscClient'
   end
   
   function OscClient:send(msg)
+    --print("sending OSC message: " .. msg)
     self.client:send(msg)
   end
 

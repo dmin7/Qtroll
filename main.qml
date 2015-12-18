@@ -243,7 +243,10 @@ ApplicationWindow {
                         Rectangle {
                             id: selectRectangle
                             color: note_color;
+                            border { width: 1; color: "white" }
                             opacity: 0.2;
+                            radius: 5
+                            smooth: true
                         }
                     }
                 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RenoiseScriptingTool doc_version="0">
-  <ApiVersion>5</ApiVersion>
+  <ApiVersion>4</ApiVersion>
   <AutoUpgraded>true</AutoUpgraded>
   <Id>re.dread.Qtroll</Id>
-  <Version>0.1</Version>
+  <Version>0.10000000000000001</Version>
   <Author>re.dread</Author>
   <Name>Qtroll</Name>
   <Category>Pattern Editor</Category>
