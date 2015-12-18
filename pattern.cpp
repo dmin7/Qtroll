@@ -11,9 +11,10 @@ void Pattern::clear()
     m_notes.clear();
 }
 
-void Pattern::count()
+int Pattern::count()
 {
     qDebug() << "number of notes: " << m_notes.count();
+    return m_notes.count();
 }
 
 void Pattern::newPattern(int length, int lpb)

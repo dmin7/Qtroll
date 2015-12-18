@@ -19,7 +19,7 @@ public:
 
     /* qml accessible methods */
     Q_INVOKABLE void clear();
-    Q_INVOKABLE void count();
+    Q_INVOKABLE int count();
     Q_INVOKABLE void newPattern(int length, int lpb);
     Q_INVOKABLE void add_note(int val, float time, float len, int vol, int instr, int line, int col);
 

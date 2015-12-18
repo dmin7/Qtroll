@@ -6,6 +6,7 @@
 #include "oscpack/osc/OscOutboundPacketStream.h"
 #include "oscpack/ip/UdpSocket.h"
 
+#include "note.h"
 
 
 #define SERVER_IP   "192.168.3.30"
@@ -21,7 +22,7 @@ public:
     Q_INVOKABLE void connect(const QString &server, const int port);
     Q_INVOKABLE void sendMsg(const QString msg);
     Q_INVOKABLE void triggerNote(int note, bool note_on = true);
-    //Q_INVOKABLE void sendNote(int val, float time, float length, int vol);
+    Q_INVOKABLE void sendNotes(Note *note);
 
 signals:
     void test();

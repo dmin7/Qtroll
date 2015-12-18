@@ -45,14 +45,14 @@ ApplicationWindow {
     OscClient {
         id: osc_client_ctrl
         Component.onCompleted: {
-            connect("127.0.0.1", 8000);
+            connect("0.0.0.0", 8000);
         }
     }
 
     OscClient {
         id: osc_client_notes
         Component.onCompleted: {
-            connect("127.0.0.1", 8001);
+            connect("0.0.0.0", 8001);
         }
     }
 
@@ -140,13 +140,11 @@ ApplicationWindow {
                     pattern.add_note(Math.round(mouseX / noteWidth), mouseY / (40*4), 1, 120, -1, -1, -1);
                     pattern.count();
                     note_view.model = pattern.notes;
+                    osc_client_notes.sendNotes(pattern.notes[pattern.count() -1]);
 
                 }
             }
 
-            Image {
-                source: "content/images/green.jpg"
-            }
 
             //Shows Grid
             DrawGrid {
