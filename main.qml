@@ -343,7 +343,7 @@ ApplicationWindow {
 
                         onDoubleClicked: {
                             // TODO: remove item
-                            //pattern.notes[index].noteDeleted = true;
+                            pattern.notes[index].noteDeleted = true;
                             //pattern.delete_note(index);
                         }
                     }
