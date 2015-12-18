@@ -24,6 +24,9 @@ public:
     Q_INVOKABLE void add_note(int val, float time, float len, int vol, int instr, int line, int col);
     Q_INVOKABLE void delete_note(int index);
     
+    Q_INVOKABLE void undo_change();
+
+
     /* setters and getters */
     float patternLength();
     int patternLpb();
@@ -45,7 +48,9 @@ private:
     float m_length; // pattern length in beats
     int m_lpb; // grid subdevisions per beat
     QList<Note*> m_notes;
+    QList<Note*> m_notes_old;
     static void append_note(QQmlListProperty<Note> *notes, Note *note);
+    void stash_notes();
 };
 
 Q_DECLARE_METATYPE(QQmlListProperty<Note>)

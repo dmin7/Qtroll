@@ -128,7 +128,6 @@ void Note::setNoteDeleted(bool del)
     if(!(del == m_deleted)) {
         m_deleted = del;
         emit noteDeletedChanged();
-        delete this;
     }
 }
 

@@ -26,7 +26,7 @@ ApplicationWindow {
     property int borderWidth: 1
     property int pianoHeight: 166
 
-    //Design: !(COLOR PALETTE EARLY WINTER MORNING)
+    //Design:
     property color grid_color: "#071F26"
     property color gridline_color: "#33444F"
     property color whitekey_color: "#f8fdff"
@@ -127,6 +127,13 @@ ApplicationWindow {
             if (event.key === Qt.Key_Control){
                 zoom.enabled = false
             }
+            if(event.modifiers && Qt.ControlModifier) {
+                if (event.key === Qt.Key_Z){
+                    console.log("undo changes")
+                    pattern.undo_change()
+                    note_view.model = pattern.notes
+                }
+            }
         }
     }
 
@@ -150,14 +157,14 @@ ApplicationWindow {
                  if (wheel.angleDelta.y > 0) {
                      /* crasht bei mir meistens wenn ichs größer mach und zeichnet Grid nicht, verkleinern geht */
                      if(noteWidth < 40){
-                         noteWidth += 5
-                         pianoHeight += 30
+                         noteWidth += 3
+                         pianoHeight += 10
                      }
                  }
                  else{
                      if(noteWidth > 15){
-                         noteWidth -= 5
-                         pianoHeight -= 30
+                         noteWidth -= 3
+                         pianoHeight -= 10
                      }
                  }
              }
@@ -246,7 +253,6 @@ ApplicationWindow {
 
            Repeater {
                 id: note_view
-                //orientation: ListView.Horizontal
                 height: 1000
                 width: 1000
                 model: pattern.notes
@@ -345,6 +351,7 @@ ApplicationWindow {
                             // TODO: remove item
                             pattern.notes[index].noteDeleted = true;
                             //pattern.delete_note(index);
+                            pattern.delete_note(index);
                         }
                     }
                 }
@@ -358,6 +365,13 @@ ApplicationWindow {
         }
     }
 
+    //top Part of view with buttons and stuff
+    Header{
+        id: header
+        width: root.width
+        height: headerHeight
+    }
+
     //Scrollbar from Qt, disappears when not used, looks better than ScrollView
     ScrollBar {
             scrollArea: flickgrid
@@ -366,10 +380,4 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
     }
 
-    //top Part of view with buttons and stuff
-    Header{
-        id: header
-        width: root.width
-        height: headerHeight
-    }
 }
