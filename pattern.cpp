@@ -17,8 +17,8 @@ int Pattern::count()
     return m_notes.count();
 }
 
-void Pattern::add_note(int val, float time, float len)
-{
+void Pattern::add_note(int val, float time, float len){
+    stash_notes();
     Note *note = new Note();
     note->setNoteValue(val);
     note->setNoteLength(len);
@@ -26,15 +26,25 @@ void Pattern::add_note(int val, float time, float len)
     m_notes.append(note);
 }
 
-void Pattern::delete_note(int index)
-{
+void Pattern::delete_note(int index){
+    stash_notes();
     //m_notes.removeAt(index);
     m_notes[index]->setNoteLength(0);
     m_notes[index]->setNoteTime(0);
+    m_notes[index]->setNoteValue(0);
     m_notes[index]->setNoteDeleted(true);
-    qDebug() << "removed Note: " << m_notes;
+    qDebug() << "removed Note: " << m_notes[index]->noteValue();
 }
 
+void Pattern::stash_notes(){
+    m_notes_old = m_notes;
+}
+
+void Pattern::undo_change(){
+    if(!m_notes_old.isEmpty()){
+        m_notes = m_notes_old;
+    }
+}
 
 float Pattern::patternLength() {
     return this->m_length;

@@ -120,6 +120,13 @@ ApplicationWindow {
             if (event.key === Qt.Key_Control){
                 zoom.enabled = false
             }
+            if(event.modifiers && Qt.ControlModifier) {
+                if (event.key === Qt.Key_Z){
+                    console.log("undo changes")
+                    pattern.undo_change()
+                    note_view.model = pattern.notes
+                }
+            }
         }
     }
 

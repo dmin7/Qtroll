@@ -20,8 +20,11 @@ public:
     /* qml accessible methods */
     Q_INVOKABLE void clear();
     Q_INVOKABLE int count();
+    Q_INVOKABLE void undo_change();
     Q_INVOKABLE void add_note(int val, float time, float len);
     Q_INVOKABLE void delete_note(int index);
+
+
     /* setters and getters */
     float patternLength();
     int patternLpb();
@@ -43,7 +46,9 @@ private:
     float m_length; // pattern length in beats
     int m_lpb; // grid subdevisions per beat
     QList<Note*> m_notes;
+    QList<Note*> m_notes_old;
     static void append_note(QQmlListProperty<Note> *notes, Note *note);
+    void stash_notes();
 };
 
 Q_DECLARE_METATYPE(QQmlListProperty<Note>)
