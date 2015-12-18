@@ -28,8 +28,11 @@ void Pattern::add_note(int val, float time, float len)
 
 void Pattern::delete_note(int index)
 {
-    m_notes.removeAt(index);
-    qDebug() << "removed Note: " << m_notes.count();
+    //m_notes.removeAt(index);
+    m_notes[index]->setNoteLength(0);
+    m_notes[index]->setNoteTime(0);
+    m_notes[index]->setNoteDeleted(true);
+    qDebug() << "removed Note: " << m_notes;
 }
 
 
