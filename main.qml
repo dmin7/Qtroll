@@ -66,7 +66,7 @@ ApplicationWindow {
         }
         onReceiveNote: {
             console.log(val);
-            pattern.add_note(val, time, len, vol, instr, line, col);
+            pattern.add_note(val, time, len, vol, instr, line, col, 0);
             pattern.count();
             note_view.model = pattern.notes;
         }
@@ -89,14 +89,16 @@ ApplicationWindow {
         //notes: []
         notes: [
             Note {
-                noteValue: 12
+                noteValue: 24
                 noteTime: 1
                 noteLength: 1
+                noteVolume: 120
             },
             Note {
-                noteValue: 15
+                noteValue: 24 + 5
                 noteTime: 3
                 noteLength: 3.3355
+                noteVolume: 60
             }
         ]
     }
@@ -146,6 +148,7 @@ ApplicationWindow {
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: parent.height
         contentWidth: numberOctaves * 12 * noteWidth
+        contentX: 24 * noteWidth
         flickableDirection: Flickable.HorizontalFlick
         flickDeceleration: 5999
 
@@ -181,13 +184,18 @@ ApplicationWindow {
             boundsBehavior: Flickable.StopAtBounds
             flickableDirection: Flickable.VerticalFlick
 
+            Note {
+                id: test
+                noteValue: 12
+            }
+
             MouseArea {
                 anchors.fill: parent
                 onDoubleClicked: {
-                    pattern.add_note(Math.round(mouseX / noteWidth), mouseY / (40*4), 1, 120, -1, -1, -1);
-                    pattern.count();
+                    pattern.add_note(Math.round(mouseX / noteWidth), mouseY / (40*4), 1, 120, -1, -1, -1, -1);
+                    //pattern.count();
                     note_view.model = pattern.notes;
-                    osc_client_notes.sendNotes(pattern.notes[pattern.count() -1]);
+                    osc_client_notes.sendNote(pattern.notes[pattern.count() -1]);
 
                 }
             }
@@ -208,6 +216,9 @@ ApplicationWindow {
                                 while (lenght-- > 0) {
                                     selectedNotes.pop();
                                 }
+                                for (var i = 0; i < pattern.count(); i++) {
+                                    pattern.notes[i].noteIsSelected = false;
+                                }
 
                             }
                             // create a new rectangle at the wanted position
@@ -227,8 +238,10 @@ ApplicationWindow {
                        console.log("x1 : x2 " + noteVal1 + " : " + noteVal2);
                        console.log("y1 : y2 " + noteTime1 + " : " + noteTime2);
                        for (var i = 0; i < pattern.count(); i++){
-                            if(pattern.notes[i].noteValue > noteVal1 && pattern.notes[i].noteValue < noteVal2){
-                                if(pattern.notes[i].noteTime  > noteTime1 && pattern.notes[i].noteTime < noteTime2){
+                            if(pattern.notes[i].noteValue > noteVal1 && pattern.notes[i].noteValue < noteVal2)
+                            {
+                                if(pattern.notes[i].noteTime + pattern.notes[i].noteLength  > noteTime1 && pattern.notes[i].noteTime < noteTime2){
+                                    pattern.notes[i].noteIsSelected = true;
                                     selectedNotes.push(i);
                                 }
                             }
@@ -264,7 +277,10 @@ ApplicationWindow {
                     visible: !noteDeleted
 
                     height: noteLength * 40 * 4
-                    border { width: 1; color: "black" }
+                    border {
+                        width: noteIsSelected? 3 : 1;
+                        color: noteIsSelected? "white" : "black"
+                    }
                     color: note_color
                     width: noteWidth
 
@@ -283,13 +299,13 @@ ApplicationWindow {
                         font.pixelSize: 8
                     }
 
-                        HueSaturation {
-                            anchors.fill: parent
-                            source: parent
-                            saturation: - 1 + (0.7 * Math.min(noteVolume) / 127)
-                            lightness: - 0.5 + (0.7 * Math.min(noteVolume, 127) / 127)
-                            hue: -1 + (noteValue%12 / 24)
-                        }
+                    HueSaturation {
+                        anchors.fill: parent
+                        source: parent
+                        saturation: - 0.5 + (0.3 * Math.min(noteVolume) / 127)
+                        lightness: - 0.5 + (0.7 * Math.min(noteVolume, 127) / 127)
+                        hue: -1 + (noteValue%12 / 24)
+                    }
 
                     MouseArea {
                         property int oldMouseY
@@ -316,6 +332,7 @@ ApplicationWindow {
                                         pattern.notes[selectedNotes[i]].noteLength =
                                                 pattern.notes[selectedNotes[i]].noteLength - 0.05
                                     }
+                                    osc_client_notes.sendNote(pattern.notes[selectedNotes[i]]);
                                 }
                             }
                             else{
@@ -326,6 +343,7 @@ ApplicationWindow {
                                     pattern.notes[index].noteLength =
                                             pattern.notes[index].noteLength - 0.05
                                 }
+                                osc_client_notes.sendNote(pattern.notes[index]);
                             }
                         }
 
@@ -341,12 +359,14 @@ ApplicationWindow {
                                     console.log("note moved noteValue: " + pattern.notes[selectedNotes[i]].noteValue);
                                     pattern.notes[selectedNotes[i]].noteValue = Math.round(parent.x / noteWidth) + (pattern.notes[selectedNotes[i]].noteValue - noteValSelected);
                                     pattern.notes[selectedNotes[i]].noteTime = parent.y / (40*4) + (pattern.notes[selectedNotes[i]].noteTime - noteTimeSelected);
+                                    osc_client_notes.sendNote(pattern.notes[selectedNotes[i]]);
                                 }
                             }
                             else {
                                 pattern.notes[index].noteValue = Math.round(parent.x / noteWidth);
                                 pattern.notes[index].noteTime = parent.y / (40*4)
                                 console.log("note moved noteValue: " + pattern.notes[index].noteValue);
+                                osc_client_notes.sendNote(pattern.notes[index]);
                             }
                         }
 

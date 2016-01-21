@@ -14,6 +14,17 @@ class Note : public QObject
     Q_PROPERTY(int noteInstrument READ noteInstrument WRITE setNoteInstrument NOTIFY noteInstrumentChanged)
     Q_PROPERTY(int noteLine READ noteLine WRITE setNoteLine NOTIFY noteLineChanged)
     Q_PROPERTY(int noteColumn READ noteColumn WRITE setNoteColumn NOTIFY noteColumnChanged)
+
+    /* @property:
+     * action code specifies what renoise will do when it receives the note:
+     * -1 = new_note: insert
+     *  0 = no change
+     * >0 = binary number specifying the changed properties
+     * eg.: 5 = 0101: noteValue and noteLength changed
+     */
+
+    Q_PROPERTY(int actionCode READ actionCode WRITE setActionCode NOTIFY actionCodeChanged)
+
     /* internal properties */
     Q_PROPERTY(bool noteIsSelected READ noteIsSelected WRITE setNoteIsSelected NOTIFY noteIsSelectedChanged)
     Q_PROPERTY(bool noteDeleted READ noteDeleted WRITE setNoteDeleted NOTIFY noteDeletedChanged)
@@ -37,6 +48,8 @@ public:
     void setNoteLine(int line);
     int noteColumn() const;
     void setNoteColumn(int col);
+    int actionCode() const;
+    void setActionCode(int code);
 
     bool noteIsSelected() const;
     void setNoteIsSelected(bool sel);
@@ -51,6 +64,7 @@ signals:
     void noteInstrumentChanged();
     void noteLineChanged();
     void noteColumnChanged();
+    void actionCodeChanged();
 
     void noteIsSelectedChanged();
     void noteDeletedChanged();
@@ -67,6 +81,8 @@ private:
     int m_volume;
     int m_line;
     int m_column;
+    int m_action;
+
     bool m_is_selected;
     bool m_deleted;
 

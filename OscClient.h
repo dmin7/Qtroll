@@ -2,6 +2,8 @@
 #define OscClient_H
 
 #include <QObject>
+#include <QQmlListProperty>
+#include <QDebug>
 
 #include "oscpack/osc/OscOutboundPacketStream.h"
 #include "oscpack/ip/UdpSocket.h"
@@ -22,7 +24,7 @@ public:
     Q_INVOKABLE void connect(const QString &server, const int port);
     Q_INVOKABLE void sendMsg(const QString msg);
     Q_INVOKABLE void triggerNote(int note, bool note_on = true);
-    Q_INVOKABLE void sendNotes(Note *note);
+    Q_INVOKABLE void sendNote(Note *note);
 
 signals:
     void test();

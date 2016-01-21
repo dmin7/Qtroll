@@ -72,7 +72,7 @@ void OscClient::triggerNote(int note, bool note_on)
     stream.Clear();
 }
 
-void OscClient::sendNotes(Note *note)
+void OscClient::sendNote(Note *note)
 {
     static const int OUTPUT_BUFFER_SIZE = 327680;
     char buffer[OUTPUT_BUFFER_SIZE];
@@ -80,10 +80,14 @@ void OscClient::sendNotes(Note *note)
 
     stream << osc::BeginBundleImmediate
         << osc::BeginMessage( "/renoise/qtroll/note" )
-        << 1//note->noteValue()
-        << 2//note->noteTime()
-        << 3//note->noteLength()
-        << 4//note->noteInstrument()
+        << note->actionCode()
+        << note->noteValue()
+        << note->noteTime()
+        << note->noteLength()
+        << note->noteVolume()
+        << note->noteInstrument()
+        << note->noteLine()
+        << note->noteColumn()
         << osc::EndMessage << osc::EndBundle;
 
     this->socket.Send( stream.Data(), stream.Size() );

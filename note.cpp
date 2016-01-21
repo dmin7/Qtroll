@@ -105,6 +105,19 @@ void Note::setNoteColumn(int col)
     }
 }
 
+int Note::actionCode() const
+{
+    return m_action;
+}
+
+void Note::setActionCode(int code)
+{
+    if (code != m_action) {
+        m_action = code;
+        emit actionCodeChanged();
+    }
+}
+
 bool Note::noteIsSelected() const
 {
     return m_is_selected;

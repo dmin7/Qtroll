@@ -26,7 +26,7 @@ void Pattern::newPattern(int length, int lpb)
 
 
 
-void Pattern::add_note(int val, float time, float len, int vol, int instr, int line, int col)
+void Pattern::add_note(int val, float time, float len, int vol, int instr, int line, int col, int action)
 {
     stash_notes();
     Note *note = new Note();
@@ -37,6 +37,7 @@ void Pattern::add_note(int val, float time, float len, int vol, int instr, int l
     note->setNoteInstrument(instr);
     note->setNoteLine(line);
     note->setNoteColumn(col);
+    note->setActionCode(action);
     m_notes.append(note);
 }
 

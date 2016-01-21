@@ -21,7 +21,7 @@ public:
     Q_INVOKABLE void clear();
     Q_INVOKABLE int count();
     Q_INVOKABLE void newPattern(int length, int lpb);
-    Q_INVOKABLE void add_note(int val, float time, float len, int vol, int instr, int line, int col);
+    Q_INVOKABLE void add_note(int val, float time, float len, int vol, int instr, int line, int col, int action);
     Q_INVOKABLE void delete_note(int index);
     
     Q_INVOKABLE void undo_change();
