@@ -1,12 +1,12 @@
 Qtroll – External Piano Roll Prototype for Renoise
 =================================================
 
-Qtroll is an experimental university project (2017) that explores driving a classic piano‑roll style MIDI editor externally for the tracker based DAW [Renoise](https://www.renoise.com/). It consists of:
+Qtroll is an experimental university project (2017) originating from a “Cross‑platform Development with Qt” elective. It explores building an external, classic piano‑roll style MIDI editor that interfaces (via OSC) with the tracker‑based DAW [Renoise](https://www.renoise.com/). It consists of:
 
 1. A Qt / QML desktop application that renders and edits note events visually (piano roll style).
 2. A Renoise scripting tool (Lua) that exports the currently selected pattern / track over OSC and receives edits back.
 
-Status: archival / prototype quality. The code works as a proof of concept, but is not production ready (hard‑coded ports, missing error handling, limited synchronization and undo, no packaging). Pull requests welcome if you feel like modernizing it.
+Status: archival / prototype quality. The code works as a proof of concept, but is not production ready (hard‑coded ports, missing error handling, limited synchronization and undo, no packaging). During the course we ran quick builds on Windows & Linux desktops and an Android device (Qt Quick) to validate portability. Pull requests welcome if you feel like modernizing it.
 
 ---
 
